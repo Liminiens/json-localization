@@ -1,0 +1,10 @@
+﻿{
+  "TestString": "Test",
+  "Inner": {
+    "TestArray": [ "One", "Two" ]
+  },
+  "TestObject": {
+    "Id": 1,
+    "Value": "Something"
+  }
+}

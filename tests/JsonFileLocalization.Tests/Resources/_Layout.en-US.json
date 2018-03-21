@@ -1,0 +1,10 @@
+﻿{
+  "TestString": "Test en-US",
+  "Inner": {
+    "TestArray": [ "One en-US", "Two en-US" ]
+  },
+  "TestObject": {
+    "Id": 1,
+    "Value": "Something en-US"
+  }
+}

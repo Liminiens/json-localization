@@ -1,0 +1,8 @@
+﻿{
+  "TestString1": "Test1",
+  "Object": {
+    "Id": 1
+  },
+  "TestString2": "Test2",
+  "TestArray": [ 1, 2, 3 ]
+}

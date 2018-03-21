@@ -1,0 +1,29 @@
+using System;
+using System.Globalization;
+using FluentAssertions;
+using JsonFileLocalization.Resources;
+using JsonFileLocalization.Tests.TestData;
+using Xunit;
+
+namespace JsonFileLocalization.Tests
+{
+    public class JsonFileStringLocalizerFactory_Tests
+    {
+
+        [Fact]
+        public void Factory_WhenCreatesResourceFromType_ReturnsWorkingResource()
+        {
+            //Arrange
+            var factory = TestJsonFileStringLocalizerFactory.GetFactory(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
+
+            //Act
+            var localizer = factory.Create(typeof(TestStringValue));
+            var result = localizer["Value"];
+
+            //Assert
+            result.Value.Should().Be("Some value");
+            result.ResourceNotFound.Should().BeFalse();
+        }
+    }
+}
