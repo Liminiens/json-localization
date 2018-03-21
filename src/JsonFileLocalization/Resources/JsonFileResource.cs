@@ -89,7 +89,7 @@ namespace JsonFileLocalization.Resources
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Failed to retrieve object on path \"{path}\" in \"{FilePath}\"");
+                _logger.LogError(e, "Failed to retrieve object on path \"{path}\" in \"{FilePath}\"", path, FilePath);
                 return new ValueFromResource<TValue>(default, false);
             }
         }

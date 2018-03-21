@@ -10,7 +10,7 @@ namespace JsonFileLocalization.View
     {
         private readonly IHtmlLocalizer _localizer;
 
-        public JsonFileHtmlLocalizer(in IHtmlLocalizerFactory factory)
+        public JsonFileHtmlLocalizer(IHtmlLocalizerFactory factory)
         {
             _localizer = factory.Create(typeof(TResource)) ?? throw new ArgumentException(nameof(factory));
         }

@@ -16,6 +16,6 @@ namespace JsonFileLocalization.Middleware
         /// <summary>
         /// Strategy for culture naming in file name
         /// </summary>
-        public JsonFileCultureSuffixStrategy CultureSuffixStrategy { get; }
+        public JsonFileCultureSuffixStrategy CultureSuffixStrategy { get; set; }
     }
 }

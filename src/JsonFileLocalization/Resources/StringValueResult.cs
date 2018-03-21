@@ -1,4 +1,6 @@
-﻿namespace JsonFileLocalization.Resources
+﻿using System;
+
+namespace JsonFileLocalization.Resources
 {
     /// <summary>
     /// String resource from a file
@@ -20,11 +22,11 @@
         /// </summary>
         public readonly string Value;
 
-        public StringValueResult(string path, string name, string value)
+        public StringValueResult(in string path, in string name, in string value)
         {
-            Path = path;
-            Name = name;
-            Value = value;
+            Path = path ?? throw new ArgumentNullException(nameof(path));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Value = value ?? throw new ArgumentNullException(nameof(value));
         }
     }
 }

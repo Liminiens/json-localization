@@ -25,8 +25,8 @@ namespace JsonFileLocalization.Resources
         /// <param name="settings">settings for manager</param>
         /// <param name="loggerFactory">logger factory</param>
         public JsonFileResourceManager(
-            in IJsonFileLocalizationSettings settings,
-            in ILoggerFactory loggerFactory)
+            IJsonFileLocalizationSettings settings,
+            ILoggerFactory loggerFactory)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _loggerFactory = loggerFactory;

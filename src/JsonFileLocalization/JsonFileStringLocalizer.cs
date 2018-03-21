@@ -88,7 +88,9 @@ namespace JsonFileLocalization
             var result = Resource.GetValue<string>(jsonPropertyPath);
             if (result.ParseSuccess)
             {
-                _logger.LogInformation($"Got resource \"{result}\" from file \"{Resource.FilePath}\" with culture \"{Culture.Name}\"");
+                _logger.LogInformation(
+                    "Got resource \"{result}\" from file \"{FilePath}\" with culture \"{Culture}\"",
+                    result.Value, Resource.FilePath, Culture.Name);
             }
             return result;
         }
