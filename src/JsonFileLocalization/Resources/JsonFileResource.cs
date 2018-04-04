@@ -40,12 +40,12 @@ namespace JsonFileLocalization.Resources
         /// <param name="culture">culture of a resource</param>
         /// <param name="logger">logger</param>
         public JsonFileResource(
-            in JObject content,
-            in string baseName,
-            in string location,
-            in string filePath,
-            in CultureInfo culture,
-            in ILogger<JsonFileResource> logger)
+            JObject content,
+            string baseName,
+            string location,
+            string filePath,
+            CultureInfo culture,
+            ILogger<JsonFileResource> logger)
         {
             _content = content ?? throw new ArgumentNullException(nameof(content));
             _baseName = baseName;
@@ -117,7 +117,7 @@ namespace JsonFileLocalization.Resources
             return properties.Select(x => new StringValueResult(x.Path, x.Name, x.Value.Value<string>()));
         }
 
-        protected bool Equals(in JsonFileResource other)
+        protected bool Equals(JsonFileResource other)
         {
             return string.Equals(FilePath, other.FilePath);
         }
@@ -129,7 +129,7 @@ namespace JsonFileLocalization.Resources
             if (ReferenceEquals(this, obj)) return true;
             if (obj is JsonFileResource resource)
             {
-                return Equals(in resource);
+                return Equals(resource);
             }
             return false;
         }

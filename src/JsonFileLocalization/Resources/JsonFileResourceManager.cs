@@ -32,7 +32,7 @@ namespace JsonFileLocalization.Resources
             _loggerFactory = loggerFactory;
         }
 
-        private string GetFileName(in string baseName, in string location, in CultureInfo culture)
+        private string GetFileName(in string baseName, in string location, CultureInfo culture)
         {
             var fileNameBuilder = new StringBuilder();
             if (!String.IsNullOrWhiteSpace(location))
@@ -69,7 +69,7 @@ namespace JsonFileLocalization.Resources
             }
         }
 
-        private JsonFileResource Create(in string baseName, in string location, in CultureInfo culture)
+        private JsonFileResource Create(in string baseName, in string location, CultureInfo culture)
         {
             if (baseName == null)
             {

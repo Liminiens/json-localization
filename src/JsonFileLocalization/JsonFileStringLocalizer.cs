@@ -5,14 +5,16 @@ using JsonFileLocalization.Resources;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
+/* ResourceManager string localizer source:
+ * https://github.com/aspnet/Localization/blob/51549e8471c247f91d5ac57bd6f8f4c68508854b/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizer.cs
+ *
+ * With culture:
+ * https://github.com/aspnet/Localization/blob/f260d4e5244ca536c5fcc05ccea1163548c6eddc/src/Microsoft.Extensions.Localization/ResourceManagerWithCultureStringLocalizer.cs
+ */
+
 namespace JsonFileLocalization
 {
-    /* ResourceManager string localizer source:
-     * https://github.com/aspnet/Localization/blob/51549e8471c247f91d5ac57bd6f8f4c68508854b/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizer.cs
-     *
-     * With culture:
-     * https://github.com/aspnet/Localization/blob/f260d4e5244ca536c5fcc05ccea1163548c6eddc/src/Microsoft.Extensions.Localization/ResourceManagerWithCultureStringLocalizer.cs
-     */
+
     /// <summary>
     /// String localizer based on json files
     /// </summary>
@@ -105,7 +107,7 @@ namespace JsonFileLocalization
             return new LocalizedString(name, value.Value, !value.ParseSuccess, Resource.ResourceName);
         }
 
-        private LocalizedString GetLocalizedString(in string name, in object[] arguments)
+        private LocalizedString GetLocalizedString(in string name, object[] arguments)
         {
             if (name == null)
             {

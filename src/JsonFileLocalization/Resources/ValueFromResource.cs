@@ -15,7 +15,7 @@
         /// </summary>
         public readonly bool ParseSuccess;
 
-        public ValueFromResource(in TValue value, in bool parseSuccess)
+        public ValueFromResource(TValue value, bool parseSuccess)
         {
             Value = value;
             ParseSuccess = parseSuccess;

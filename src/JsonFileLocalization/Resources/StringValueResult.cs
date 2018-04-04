@@ -22,7 +22,7 @@ namespace JsonFileLocalization.Resources
         /// </summary>
         public readonly string Value;
 
-        public StringValueResult(in string path, in string name, in string value)
+        public StringValueResult(string path, string name, string value)
         {
             Path = path ?? throw new ArgumentNullException(nameof(path));
             Name = name ?? throw new ArgumentNullException(nameof(name));

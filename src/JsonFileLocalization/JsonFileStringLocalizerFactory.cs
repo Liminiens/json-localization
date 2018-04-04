@@ -4,16 +4,16 @@ using JsonFileLocalization.Resources;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
+/*
+ * ResourceManagerStringLocalizerFactory source:
+ * https://github.com/aspnet/Localization/blob/bab2a50ec1a780585ffa89756abd1d995b7f3f17/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizerFactory.cs
+ *
+ * HtmlLocalizerFactory source
+ * https://github.com/aspnet/Mvc/blob/760c8f38678118734399c58c2dac981ea6e47046/src/Microsoft.AspNetCore.Mvc.Localization/HtmlLocalizerFactory.cs
+ */
+
 namespace JsonFileLocalization
 {
-    /*
-     * ResourceManagerStringLocalizerFactory source:
-     * https://github.com/aspnet/Localization/blob/bab2a50ec1a780585ffa89756abd1d995b7f3f17/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizerFactory.cs
-     *
-     * HtmlLocalizerFactory source
-     * https://github.com/aspnet/Mvc/blob/760c8f38678118734399c58c2dac981ea6e47046/src/Microsoft.AspNetCore.Mvc.Localization/HtmlLocalizerFactory.cs
-     */
-
     /// <summary>
     /// Factory for string localizers based on Json file resources
     /// </summary>
