@@ -1,6 +1,7 @@
 ﻿using JsonFileLocalization.Caching;
-using JsonFileLocalization.Resources;
-using JsonFileLocalization.View;
+using JsonFileLocalization.Resource;
+using JsonFileLocalization.StringLocalization;
+using JsonFileLocalization.ViewLocalization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.DependencyInjection;

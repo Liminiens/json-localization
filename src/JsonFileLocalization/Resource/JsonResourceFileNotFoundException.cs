@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace JsonFileLocalization.Resources
+namespace JsonFileLocalization.Resource
 {
     /// <summary>
     /// Exception for a situation when an invalid path for a resource was provided

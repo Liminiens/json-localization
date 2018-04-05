@@ -1,4 +1,4 @@
-﻿namespace JsonFileLocalization.Resources
+﻿namespace JsonFileLocalization.Resource
 {
     /// <summary>
     /// Provides settings for json file localization

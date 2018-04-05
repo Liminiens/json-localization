@@ -6,7 +6,7 @@ using JsonFileLocalization.Caching;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace JsonFileLocalization.Resources
+namespace JsonFileLocalization.Resource
 {
     /// <summary>
     /// Resource manager based on JSON files
@@ -32,7 +32,7 @@ namespace JsonFileLocalization.Resources
             _loggerFactory = loggerFactory;
         }
 
-        private string GetFileName(in string baseName, in string location, CultureInfo culture)
+        private string GetFileName(string baseName, string location, CultureInfo culture)
         {
             var fileNameBuilder = new StringBuilder();
             if (!String.IsNullOrWhiteSpace(location))
@@ -59,7 +59,7 @@ namespace JsonFileLocalization.Resources
             return fileNameBuilder.ToString();
         }
 
-        private JObject LoadFile(in string path)
+        private JObject LoadFile(string path)
         {
             using (var fileStream = File.OpenRead(path))
             using (var streamReader = new StreamReader(fileStream))
@@ -69,7 +69,7 @@ namespace JsonFileLocalization.Resources
             }
         }
 
-        private JsonFileResource Create(in string baseName, in string location, CultureInfo culture)
+        private JsonFileResource Create(string baseName, string location, CultureInfo culture)
         {
             if (baseName == null)
             {

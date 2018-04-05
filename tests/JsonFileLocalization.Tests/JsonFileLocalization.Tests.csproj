@@ -81,7 +81,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\JsonFileBasedLocalization\JsonFileLocalization.csproj" />
     <ProjectReference Include="..\..\src\JsonFileLocalization\JsonFileLocalization.csproj" />
   </ItemGroup>
 

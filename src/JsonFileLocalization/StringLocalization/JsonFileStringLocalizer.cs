@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using JsonFileLocalization.Resources;
+using JsonFileLocalization.Resource;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
  * https://github.com/aspnet/Localization/blob/f260d4e5244ca536c5fcc05ccea1163548c6eddc/src/Microsoft.Extensions.Localization/ResourceManagerWithCultureStringLocalizer.cs
  */
 
-namespace JsonFileLocalization
+namespace JsonFileLocalization.StringLocalization
 {
 
     /// <summary>
@@ -50,11 +50,6 @@ namespace JsonFileLocalization
         /// </summary>
         private readonly string _location;
 
-        /// <summary>
-        /// Json localization resources
-        /// </summary>
-        private JsonFileResource Resource { get; }
-
         public JsonFileStringLocalizer(
             ILoggerFactory loggerFactory,
             IJsonFileResourceManager resourceManager,
@@ -76,6 +71,11 @@ namespace JsonFileLocalization
         }
 
         /// <summary>
+        /// Json localization resources
+        /// </summary>
+        private JsonFileResource Resource { get; }
+
+        /// <summary>
         /// Culture of localizer
         /// </summary>
         public CultureInfo Culture => Resource.Culture;
@@ -85,19 +85,19 @@ namespace JsonFileLocalization
         /// </summary>
         /// <param name="jsonPropertyPath">JPath for string</param>
         /// <returns>Value and if resource was searched by full name (location.baseName)</returns>
-        private ValueFromResource<string> GetString(in string jsonPropertyPath)
+        private ValueFromResource<string> GetString(string jsonPropertyPath)
         {
             var result = Resource.GetValue<string>(jsonPropertyPath);
             if (result.ParseSuccess)
             {
                 _logger.LogInformation(
-                    "Got resource \"{result}\" from file \"{FilePath}\" with culture \"{Culture}\"",
-                    result.Value, Resource.FilePath, Culture.Name);
+                    "Retrieved resource \"{path}\" with \"{result}\" from file \"{filePath}\" with culture \"{culture}\"",
+                    jsonPropertyPath, result.Value, Resource.FilePath, Culture.Name);
             }
             return result;
         }
 
-        private LocalizedString GetLocalizedString(in string name)
+        private LocalizedString GetLocalizedString(string name)
         {
             if (name == null)
             {
@@ -107,14 +107,14 @@ namespace JsonFileLocalization
             return new LocalizedString(name, value.Value, !value.ParseSuccess, Resource.ResourceName);
         }
 
-        private LocalizedString GetLocalizedString(in string name, object[] arguments)
+        private LocalizedString GetLocalizedString(string name, object[] arguments)
         {
             if (name == null)
             {
                 throw new ArgumentNullException(nameof(name));
             }
             var value = GetString(name);
-            var formatted = String.Format(value.Value, arguments);
+            var formatted = System.String.Format(value.Value, arguments);
             return new LocalizedString(name, formatted, !value.ParseSuccess, Resource.ResourceName);
         }
 
@@ -130,7 +130,10 @@ namespace JsonFileLocalization
             {
                 var currentCulture = startingCulture;
                 var parentCulture = currentCulture.Parent;
-                //https://github.com/aspnet/Localization/blob/51549e8471c247f91d5ac57bd6f8f4c68508854b/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizer.cs#L236
+                /*
+                 * Example from ResourceManagerStringLocalizer:
+                 * https://github.com/aspnet/Localization/blob/51549e8471c247f91d5ac57bd6f8f4c68508854b/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizer.cs#L236
+                 */
                 while (!parentCulture.Equals(currentCulture)
                        && !currentCulture.Parent.Equals(CultureInfo.InvariantCulture))
                 {

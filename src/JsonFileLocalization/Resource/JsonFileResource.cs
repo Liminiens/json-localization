@@ -7,7 +7,7 @@ using JsonFileLocalization.Caching;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace JsonFileLocalization.Resources
+namespace JsonFileLocalization.Resource
 {
     /// <summary>
     /// Represents a json file localization resource
@@ -35,8 +35,8 @@ namespace JsonFileLocalization.Resources
         /// </summary>
         /// <param name="content">parsed content of a file</param>
         /// <param name="baseName">resource name</param>
-        /// <param name="location">assembly name of a resource</param>
-        /// <param name="filePath">path to a resource</param>
+        /// <param name="location">location of a resource</param>
+        /// <param name="filePath">file path to a resource</param>
         /// <param name="culture">culture of a resource</param>
         /// <param name="logger">logger</param>
         public JsonFileResource(
@@ -53,25 +53,21 @@ namespace JsonFileLocalization.Resources
             FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
             Culture = culture ?? throw new ArgumentNullException(nameof(culture));
             _logger = logger;
+
+            var resourceNameBuilder = new StringBuilder();
+            if (!String.IsNullOrEmpty(_location))
+            {
+                resourceNameBuilder.Append(_location);
+                resourceNameBuilder.Append(".");
+            }
+            resourceNameBuilder.Append(_baseName);
+            ResourceName = resourceNameBuilder.ToString();
         }
 
         /// <summary>
         /// Name of a resource
         /// </summary>
-        public string ResourceName
-        {
-            get
-            {
-                var result = new StringBuilder();
-                if (!String.IsNullOrEmpty(_location))
-                {
-                    result.Append(_location);
-                    result.Append(".");
-                }
-                result.Append(_baseName);
-                return result.ToString();
-            }
-        }
+        public string ResourceName { get; }
 
         /// <summary>
         /// Gets a value on a specified path or a default value if can't convert value to a specified type
@@ -104,9 +100,9 @@ namespace JsonFileLocalization.Resources
         }
 
         /// <summary>
-        /// Returns strings which are direct root descendants
+        /// Returns string values from properties that are direct root descendants
         /// </summary>
-        /// <returns>Enumeration of strings which are direct root descendants</returns>
+        /// <returns>Enumeration of string values from properties that are direct root descendants</returns>
         public IEnumerable<StringValueResult> GetRootStrings()
         {
             var properties = _content.Properties()

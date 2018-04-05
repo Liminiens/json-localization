@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace JsonFileLocalization.Resources
+namespace JsonFileLocalization.Resource
 {
     /// <summary>
     /// Strategy for culture naming in resource file name

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using JsonFileLocalization.Resources;
+using JsonFileLocalization.Resource;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using NSubstitute;

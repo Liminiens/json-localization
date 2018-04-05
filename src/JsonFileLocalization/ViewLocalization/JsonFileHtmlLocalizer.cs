@@ -3,7 +3,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 
-namespace JsonFileLocalization.View
+namespace JsonFileLocalization.ViewLocalization
 {
     public class JsonFileHtmlLocalizer : IHtmlLocalizer
     {

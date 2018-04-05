@@ -4,60 +4,76 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using JsonFileLocalization.ObjectLocalization;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Localization;
 
-namespace JsonFileLocalization.View
+namespace JsonFileLocalization.ViewLocalization
 {
     /*
      * ViewLocalizer source
      * https://github.com/aspnet/Mvc/blob/760c8f38678118734399c58c2dac981ea6e47046/src/Microsoft.AspNetCore.Mvc.Localization/ViewLocalizer.cs
      */
 
-    public class JsonViewLocalizer : IViewLocalizer, IViewContextAware
+    public class JsonViewLocalizer : IViewLocalizerExtended, IViewContextAware
     {
-        private readonly IHtmlLocalizerFactory _factory;
+        private readonly IHtmlLocalizerFactory _htmlLocalizerFactory;
+        private readonly IObjectLocalizerFactory _objectLocalizerFactory;
+        private IHtmlLocalizer _htmlLocalizer;
+        private IObjectLocalizer _objectLocalizer;
         private string _viewPrefix = String.Empty;
-        private IHtmlLocalizer _localizer;
 
-        public JsonViewLocalizer(IHtmlLocalizerFactory factory)
+        public JsonViewLocalizer(IHtmlLocalizerFactory htmlLocalizerFactory, IObjectLocalizerFactory objectLocalizerFactory)
         {
-            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
+            _htmlLocalizerFactory = htmlLocalizerFactory ?? throw new ArgumentNullException(nameof(htmlLocalizerFactory));
+            _objectLocalizerFactory = objectLocalizerFactory ?? throw new ArgumentNullException(nameof(objectLocalizerFactory));
         }
 
         /// <inheritdoc />
         public LocalizedString GetString(string name)
         {
-            return _localizer.GetString(name);
+            return _htmlLocalizer.GetString(name);
         }
 
         /// <inheritdoc />
         public LocalizedString GetString(string name, params object[] arguments)
         {
-            return _localizer.GetString(name, arguments);
+            return _htmlLocalizer.GetString(name, arguments);
         }
 
         /// <inheritdoc />
         public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
         {
-            return _localizer.GetAllStrings(includeParentCultures);
+            return _htmlLocalizer.GetAllStrings(includeParentCultures);
         }
 
         /// <inheritdoc />
         public IHtmlLocalizer WithCulture(CultureInfo culture)
         {
-            return _localizer.WithCulture(culture);
+            return _htmlLocalizer.WithCulture(culture);
         }
 
         /// <inheritdoc />
         public LocalizedHtmlString this[string name]
-            => _localizer[name];
+            => _htmlLocalizer[name];
 
         /// <inheritdoc />
         public LocalizedHtmlString this[string name, params object[] arguments]
-            => _localizer[name, arguments];
+            => _htmlLocalizer[name, arguments];
+
+        /// <inheritdoc />
+        public LocalizedObject<TValue> GetLocalizedObject<TValue>(string name)
+        {
+            return _objectLocalizer.GetLocalizedObject<TValue>(name);
+        }
+
+        /// <inheritdoc />
+        IObjectLocalizer IObjectLocalizer.WithCulture(CultureInfo culture)
+        {
+            return _objectLocalizer.WithCulture(culture);
+        }
 
         /// <inheritdoc />
         public void Contextualize(ViewContext viewContext)
@@ -80,10 +96,11 @@ namespace JsonFileLocalization.View
             //Turns view path to a resource name without culture
             _viewPrefix = GetPrefix(path);
 
-            _localizer = _factory.Create(_viewPrefix, String.Empty);
+            _htmlLocalizer = _htmlLocalizerFactory.Create(_viewPrefix, String.Empty);
+            _objectLocalizer = _objectLocalizerFactory.Create(_viewPrefix, String.Empty);
         }
 
-        private string GetPrefix(in string viewPath)
+        private string GetPrefix(string viewPath)
         {
             var builder = new StringBuilder(viewPath);
             var extension = Path.GetExtension(viewPath);
@@ -92,7 +109,7 @@ namespace JsonFileLocalization.View
             builder.Replace(Path.AltDirectorySeparatorChar, '.');
             if (builder[0] == '.')
             {
-                builder.Remove(0, 1); //removes leading '.'
+                builder.Remove(0, 1);
             }
             return builder.ToString();
         }

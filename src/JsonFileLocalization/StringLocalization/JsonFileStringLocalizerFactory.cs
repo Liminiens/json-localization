@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using JsonFileLocalization.Resources;
+using JsonFileLocalization.Resource;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
  * https://github.com/aspnet/Mvc/blob/760c8f38678118734399c58c2dac981ea6e47046/src/Microsoft.AspNetCore.Mvc.Localization/HtmlLocalizerFactory.cs
  */
 
-namespace JsonFileLocalization
+namespace JsonFileLocalization.StringLocalization
 {
     /// <summary>
     /// Factory for string localizers based on Json file resources

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace JsonFileLocalization.Object
+namespace JsonFileLocalization.ObjectLocalization
 {
     /// <summary>
     /// Represents a service that provides localized objects.
@@ -11,7 +11,7 @@ namespace JsonFileLocalization.Object
         /// Returns localized object
         /// </summary>
         /// <typeparam name="TValue">Type of an object</typeparam>
-        /// <param name="name">Object name in a resource</param>
+        /// <param name="name">Object JPath in a resource</param>
         /// <returns>Returns a culture specific <see cref="LocalizedObject{TValue}"/></returns>
         LocalizedObject<TValue> GetLocalizedObject<TValue>(string name);
 

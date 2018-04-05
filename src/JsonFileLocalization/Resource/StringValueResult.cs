@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JsonFileLocalization.Resources
+namespace JsonFileLocalization.Resource
 {
     /// <summary>
     /// String resource from a file

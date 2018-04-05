@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace JsonFileLocalization.Resources
+namespace JsonFileLocalization.Resource
 {
     public interface IJsonFileResourceManager
     {

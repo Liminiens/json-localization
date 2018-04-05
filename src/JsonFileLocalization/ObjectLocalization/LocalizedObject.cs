@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JsonFileLocalization.Object
+namespace JsonFileLocalization.ObjectLocalization
 {
     /// <summary>
     /// Localized object value from a resource
@@ -50,7 +50,7 @@ namespace JsonFileLocalization.Object
 
         public static implicit operator TValue(LocalizedObject<TValue> localizedObject)
         {
-            if (localizedObject == null)
+            if (!typeof(TValue).IsValueType && localizedObject == null)
             {
                 return default;
             }
@@ -58,7 +58,7 @@ namespace JsonFileLocalization.Object
         }
 
         /// <summary>
-        /// The name of the object in the resource it was loaded from.
+        /// The JPath of the object in the resource it was loaded from.
         /// </summary>
         public string Name { get; }
 

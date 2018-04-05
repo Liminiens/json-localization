@@ -1,4 +1,4 @@
-﻿namespace JsonFileLocalization.Resources
+﻿namespace JsonFileLocalization.Resource
 {
     /// <summary>
     /// Value from a resource
@@ -10,6 +10,7 @@
         /// Value
         /// </summary>
         public readonly TValue Value;
+
         /// <summary>
         /// Is value parsed successfully
         /// </summary>

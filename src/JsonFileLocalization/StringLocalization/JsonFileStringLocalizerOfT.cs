@@ -2,7 +2,7 @@
 using System.Globalization;
 using Microsoft.Extensions.Localization;
 
-namespace JsonFileLocalization
+namespace JsonFileLocalization.StringLocalization
 {
     public class JsonFileStringLocalizer<TResource> : IStringLocalizer<TResource>
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using FluentAssertions;
-using JsonFileLocalization.Resources;
+using JsonFileLocalization.Resource;
 using JsonFileLocalization.Tests.TestData;
 using Xunit;
 
