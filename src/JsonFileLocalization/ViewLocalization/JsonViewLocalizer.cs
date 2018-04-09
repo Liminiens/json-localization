@@ -17,6 +17,9 @@ namespace JsonFileLocalization.ViewLocalization
      * https://github.com/aspnet/Mvc/blob/760c8f38678118734399c58c2dac981ea6e47046/src/Microsoft.AspNetCore.Mvc.Localization/ViewLocalizer.cs
      */
 
+    /// <summary>
+    /// Service for Razor View localizing
+    /// </summary>
     public class JsonViewLocalizer : IViewLocalizerExtended, IViewContextAware
     {
         private readonly IHtmlLocalizerFactory _htmlLocalizerFactory;
@@ -25,6 +28,11 @@ namespace JsonFileLocalization.ViewLocalization
         private IObjectLocalizer _objectLocalizer;
         private string _viewPrefix = String.Empty;
 
+        /// <summary>
+        /// Creates a new <see cref="JsonViewLocalizer"/>
+        /// </summary>
+        /// <param name="htmlLocalizerFactory">A factory of <see cref="IHtmlLocalizer"/></param>
+        /// <param name="objectLocalizerFactory">A factory of <see cref="IObjectLocalizer"/></param>
         public JsonViewLocalizer(IHtmlLocalizerFactory htmlLocalizerFactory, IObjectLocalizerFactory objectLocalizerFactory)
         {
             _htmlLocalizerFactory = htmlLocalizerFactory ?? throw new ArgumentNullException(nameof(htmlLocalizerFactory));

@@ -12,7 +12,7 @@ namespace JsonFileLocalization.ObjectLocalization
         /// </summary>
         /// <typeparam name="TValue">Type of an object</typeparam>
         /// <param name="name">Object JPath in a resource</param>
-        /// <returns>Returns a culture specific <see cref="LocalizedObject{TValue}"/></returns>
+        /// <returns>The resource as a <see cref="LocalizedObject{TValue}"/></returns>
         LocalizedObject<TValue> GetLocalizedObject<TValue>(string name);
 
         /// <summary>
@@ -22,5 +22,4 @@ namespace JsonFileLocalization.ObjectLocalization
         /// <returns>A culture-specific <see cref="IObjectLocalizer" />.</returns>
         IObjectLocalizer WithCulture(CultureInfo culture);
     }
-
 }

@@ -48,5 +48,25 @@ namespace JsonFileLocalization.Tests
             value.Should().Be("Something");
             usValue.Should().Be("Something en-US");
         }
+
+
+    }
+
+    public class JsonFileObjectLocalizerFactory_Tests
+    {
+        [Fact]
+        public void Create_WhenCreatedFromType_ReturnsResource()
+        {
+            //Arrange
+            CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
+            var factory = TestJsonFileObjectLocalizerFactory.GetFactory(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var localizer = factory.Create(typeof(IntArrayObject));
+
+            //Act
+            var result = localizer.GetLocalizedObject<int[]>("Value");
+
+            //Assert
+            result.Value.Should().Equal(8, 9, 10);
+        }
     }
 }

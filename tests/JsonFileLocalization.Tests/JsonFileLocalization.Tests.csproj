@@ -12,8 +12,8 @@
     <None Remove="Resources\AllStrings.ru.json" />
     <None Remove="Resources\Format.en.json" />
     <None Remove="Resources\IntArrayObject.ru-RU.json" />
-    <None Remove="Resources\JsonFileLocalization.Tests.IntArrayObject.ru-RU.json" />
-    <None Remove="Resources\JsonFileLocalization.Tests.TestStringValue.ru-RU.json" />
+    <None Remove="Resources\JsonFileLocalization.Tests.TestData.Models.IntArrayObject.ru-RU.json" />
+    <None Remove="Resources\JsonFileLocalization.Tests.TestData.Models.TestStringValue.ru-RU.json" />
     <None Remove="Resources\LocationTest.ru-RU.json" />
     <None Remove="Resources\Strategy.ru-RU.json" />
     <None Remove="Resources\Strategy.ru.json" />
@@ -39,10 +39,10 @@
     <Content Include="Resources\IntArrayObject.ru-RU.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\JsonFileLocalization.Tests.TestStringValue.ru-RU.json">
+    <Content Include="Resources\JsonFileLocalization.Tests.TestData.Models.TestStringValue.ru-RU.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\JsonFileLocalization.Tests.IntArrayObject.ru-RU.json">
+    <Content Include="Resources\JsonFileLocalization.Tests.TestData.Models.IntArrayObject.ru-RU.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\LocationTest.ru-RU.json">

@@ -1,5 +1,4 @@
 ﻿using JsonFileLocalization.Resource;
-using Microsoft.Extensions.Options;
 
 namespace JsonFileLocalization.Middleware
 {

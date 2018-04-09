@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace JsonFileLocalization.Tests.TestData.Models
+﻿namespace JsonFileLocalization.Tests.TestData.Models
 {
     public class LayoutRu
     {

@@ -1,8 +1,8 @@
-using System;
 using System.Globalization;
 using FluentAssertions;
 using JsonFileLocalization.Resource;
 using JsonFileLocalization.Tests.TestData;
+using JsonFileLocalization.Tests.TestData.Models;
 using Xunit;
 
 namespace JsonFileLocalization.Tests

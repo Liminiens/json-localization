@@ -1,4 +1,4 @@
-﻿namespace JsonFileLocalization.Tests.TestData
+﻿namespace JsonFileLocalization.Tests.TestData.Models
 {
     public class TestStringValue
     {

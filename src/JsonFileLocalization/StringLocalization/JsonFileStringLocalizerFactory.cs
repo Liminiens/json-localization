@@ -36,7 +36,7 @@ namespace JsonFileLocalization.StringLocalization
         /// <inheritdoc />
         public IStringLocalizer Create(Type resourceSource)
         {
-            var typeName = resourceSource.Name;
+            var typeName = resourceSource.FullName;
             var assemblyName = resourceSource.Assembly.GetName().Name;
             return Create(typeName, assemblyName);
         }

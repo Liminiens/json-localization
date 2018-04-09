@@ -27,7 +27,7 @@ namespace JsonFileLocalization.ObjectLocalization
         /// <inheritdoc />
         public IObjectLocalizer Create(Type resourceSource)
         {
-            var typeName = resourceSource.Name;
+            var typeName = resourceSource.FullName;
             var assemblyName = resourceSource.Assembly.GetName().Name;
             return Create(typeName, assemblyName);
         }

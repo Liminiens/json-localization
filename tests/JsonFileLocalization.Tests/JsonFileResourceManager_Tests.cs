@@ -67,7 +67,7 @@ namespace JsonFileLocalization.Tests
             var assemblyName = type.Assembly.GetName().Name;
 
             //Act
-            var resource = manager.GetResource(type.Name, assemblyName, new CultureInfo("ru-RU"));
+            var resource = manager.GetResource(type.FullName, assemblyName, new CultureInfo("ru-RU"));
             var result = resource.GetValue<IntArrayObject>(String.Empty).Value;
 
             //Assert

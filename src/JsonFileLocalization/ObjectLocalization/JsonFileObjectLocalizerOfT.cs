@@ -6,15 +6,15 @@ namespace JsonFileLocalization.ObjectLocalization
     /// A <see cref="JsonFileObjectLocalizer"/> for a type TResource
     /// </summary>
     /// <typeparam name="TResource"></typeparam>
-    public class JsonFileObjectLocalizerOfT<TResource> : IObjectLocalizer
+    public class JsonFileObjectLocalizer<TResource> : IObjectLocalizer
     {
         private readonly IObjectLocalizer _localizer;
 
         /// <summary>
-        /// Creates a <see cref="JsonFileObjectLocalizerOfT{TResource}"/>
+        /// Creates a <see cref="JsonFileObjectLocalizer{TResource}"/>
         /// </summary>
         /// <param name="factory">A factory of <see cref="JsonFileObjectLocalizer"/> objects</param>
-        public JsonFileObjectLocalizerOfT(JsonFileObjectLocalizerFactory factory)
+        public JsonFileObjectLocalizer(JsonFileObjectLocalizerFactory factory)
         {
             _localizer = factory.Create(typeof(TResource));
         }

@@ -1,4 +1,5 @@
 ﻿using JsonFileLocalization.Caching;
+using JsonFileLocalization.ObjectLocalization;
 using JsonFileLocalization.Resource;
 using JsonFileLocalization.StringLocalization;
 using JsonFileLocalization.ViewLocalization;
@@ -11,6 +12,12 @@ namespace JsonFileLocalization.Middleware
 {
     public static class JsonLocalizationExtensions
     {
+        /// <summary>
+        /// Registers types for resource localization via json files
+        /// </summary>
+        /// <param name="services">service collection</param>
+        /// <param name="options">localization options</param>
+        /// <returns></returns>
         public static IServiceCollection AddJsonFileLocalization(
             this IServiceCollection services, JsonLocalizationOptions options)
         {
@@ -24,17 +31,14 @@ namespace JsonFileLocalization.Middleware
             services.AddTransient<IJsonFileContentCache, JsonFileContentCache>();
             services.AddTransient<IStringLocalizerFactory, JsonFileStringLocalizerFactory>();
             services.AddTransient(typeof(IStringLocalizer<>), typeof(JsonFileStringLocalizer<>));
-
-            return services;
-        }
-
-        public static IServiceCollection AddJsonFileViewLocalication(this IServiceCollection services)
-        {
-            services.AddTransient<IViewLocalizer, JsonViewLocalizer>();
-            services.AddTransient<JsonViewLocalizer>();
+            services.AddTransient<IObjectLocalizerFactory, JsonFileObjectLocalizerFactory>();
+            services.AddTransient(typeof(IObjectLocalizer<>), typeof(JsonFileObjectLocalizer<>));
 
             services.AddTransient<IHtmlLocalizerFactory, JsonFileHtmlLocalizerFactory>();
             services.AddTransient(typeof(IHtmlLocalizer<>), typeof(JsonFileHtmlLocalizer<>));
+            services.AddTransient<IViewLocalizer, JsonViewLocalizer>();
+            services.AddTransient<IViewLocalizerExtended, JsonViewLocalizer>();
+
             return services;
         }
     }

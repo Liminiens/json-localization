@@ -91,15 +91,6 @@ namespace JsonFileLocalization.Resource
         }
 
         /// <summary>
-        /// Returns property names which are direct descendatns of the root object
-        /// </summary>
-        /// <returns>Enumeration of names</returns>
-        public IEnumerable<string> GetRootPropertyNames()
-        {
-            return _content.Properties().Select(x => x.Path);
-        }
-
-        /// <summary>
         /// Returns string values from properties that are direct root descendants
         /// </summary>
         /// <returns>Enumeration of string values from properties that are direct root descendants</returns>

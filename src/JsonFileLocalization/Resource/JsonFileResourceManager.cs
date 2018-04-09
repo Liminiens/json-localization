@@ -82,31 +82,22 @@ namespace JsonFileLocalization.Resource
                     path, culture, _loggerFactory.CreateLogger<JsonFileResource>());
             }
             //try to find a file without a location in name
-            if (!String.IsNullOrWhiteSpace(location))
+            if (String.IsNullOrWhiteSpace(location))
             {
-                string noLocationPath = Path.Combine(_settings.ResourcesPath, GetFileName(baseName.Trim(), String.Empty, culture));
+                throw new JsonResourceFileNotFoundException(
+                    $"Resource file with culture \"{culture.Name}\" not found: \"{path}\"");
+            }
+            string noLocationPath = Path.Combine(_settings.ResourcesPath, GetFileName(baseName.Trim(), String.Empty, culture));
 
-                if (File.Exists(noLocationPath))
-                {
-                    return new JsonFileResource(LoadFile(noLocationPath), baseName, String.Empty,
-                        path, culture, _loggerFactory.CreateLogger<JsonFileResource>());
-                }
-
+            if (!File.Exists(noLocationPath))
+            {
                 throw new JsonResourceFileNotFoundException(
                     $"Resource file with culture \"{culture.Name}\" not found on paths: \"{path}\" and \"{noLocationPath}\"");
             }
-
-            throw new JsonResourceFileNotFoundException(
-                $"Resource file with culture \"{culture.Name}\" not found: \"{path}\"");
+            return new JsonFileResource(LoadFile(noLocationPath), baseName, String.Empty, path, culture, _loggerFactory.CreateLogger<JsonFileResource>());
         }
 
-        /// <summary>
-        /// Gets an already existing json resource or creates a new one if it doesnt exist yet
-        /// </summary>
-        /// <param name="baseName">name of a resource</param>
-        /// <param name="location">assembly name or empty string</param>
-        /// <param name="culture">resource culture</param>
-        /// <returns>Json resource</returns>
+        /// <inheritdoc />
         public JsonFileResource GetResource(string baseName, string location, CultureInfo culture)
         {
             string cacheKey = $"baseName={baseName};location={location};culture={culture.Name};";
