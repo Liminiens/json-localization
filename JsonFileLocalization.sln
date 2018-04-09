@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2011
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = ".build", "build\.build.csproj", "{59AE2FF9-4270-43A0-A536-863F36DC45C2}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonFileLocalization", "src\JsonFileLocalization\JsonFileLocalization.csproj", "{8758DE0B-5A58-40AC-BEA9-FB73FD0255BD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonFileLocalization.Tests", "tests\JsonFileLocalization.Tests\JsonFileLocalization.Tests.csproj", "{65EEA37A-1C0E-43A8-A42E-A59DC0190AE9}"
@@ -13,6 +15,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59AE2FF9-4270-43A0-A536-863F36DC45C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59AE2FF9-4270-43A0-A536-863F36DC45C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8758DE0B-5A58-40AC-BEA9-FB73FD0255BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8758DE0B-5A58-40AC-BEA9-FB73FD0255BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8758DE0B-5A58-40AC-BEA9-FB73FD0255BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
