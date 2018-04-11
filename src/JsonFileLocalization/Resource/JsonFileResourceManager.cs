@@ -39,7 +39,7 @@ namespace JsonFileLocalization.Resource
             _resourceFileWatcher = new FileSystemWatcher(settings.ResourcesPath)
             {
                 EnableRaisingEvents = true,
-                NotifyFilter = NotifyFilters.FileName,
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size | NotifyFilters.FileName,
                 IncludeSubdirectories = true,
                 Filter = "*.json"
             };
