@@ -23,5 +23,29 @@ namespace JsonFileLocalization.Caching
         {
             return _cache.GetOrAdd(key, new Lazy<TValue>(valueFactory(key))).Value;
         }
+
+        public virtual void Invalidate(TKey key)
+        {
+            _cache.TryRemove(key, out _);
+        }
+
+        public virtual bool TryAdd(TKey key, TValue value)
+        {
+            return _cache.TryAdd(key, new Lazy<TValue>(value));
+        }
+
+        public virtual bool TryGet(TKey key, out TValue value)
+        {
+            if (_cache.TryGetValue(key, out var lazyValue))
+            {
+                value = lazyValue.Value;
+                return true;
+            }
+            else
+            {
+                value = default;
+                return false;
+            }
+        }
     }
 }

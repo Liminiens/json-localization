@@ -91,7 +91,7 @@ namespace JsonFileLocalization.StringLocalization
             if (result.ParseSuccess)
             {
                 _logger.LogInformation(
-                    "Retrieved resource \"{path}\" with \"{result}\" from file \"{filePath}\" with culture \"{culture}\"",
+                    "Retrieved resource \"{path}\" with value \"{result}\" from file \"{filePath}\" with culture \"{culture}\"",
                     jsonPropertyPath, result.Value, Resource.FilePath, Culture.Name);
             }
             return result;
