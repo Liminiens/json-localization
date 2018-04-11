@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <LangVersion>7.2</LangVersion>
+    <DocumentationFile>bin\Debug\netcoreapp2.0\JsonFileLocalization.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
