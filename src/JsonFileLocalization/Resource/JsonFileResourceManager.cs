@@ -22,7 +22,7 @@ namespace JsonFileLocalization.Resource
             = new ConcurrentDictionaryCache<string, string>();
 
         private readonly FileSystemWatcher _resourceFileWatcher;
-        private ILogger<JsonFileResourceManager> _logger;
+        private readonly ILogger<JsonFileResourceManager> _logger;
 
         /// <summary>
         /// Creates an instance of resource manager with provided settings
@@ -53,10 +53,12 @@ namespace JsonFileLocalization.Resource
             if (fileChanged || fileDeleted)
             {
                 var filePath = fileSystemEventArgs.FullPath;
-                _resourcePathCache.TryGet(filePath, out var key);
-                _resourcePathCache.Invalidate(filePath);
-                _resourceCache.Invalidate(key);
-                _logger.LogInformation("Deleted resource \"{path}\" with cache key \"{key}\" from cache", filePath, key);
+                if (_resourcePathCache.TryGet(filePath, out var key))
+                {
+                    _resourcePathCache.Invalidate(filePath);
+                    _resourceCache.Invalidate(key);
+                    _logger.LogInformation("Deleted resource \"{path}\" with cache key \"{key}\" from cache", filePath, key);
+                }
             }
         }
 
