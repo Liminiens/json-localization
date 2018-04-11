@@ -22,6 +22,7 @@ namespace JsonFileLocalization.Resource
             = new ConcurrentDictionaryCache<string, string>();
 
         private readonly FileSystemWatcher _resourceFileWatcher;
+        private ILogger<JsonFileResourceManager> _logger;
 
         /// <summary>
         /// Creates an instance of resource manager with provided settings
@@ -33,7 +34,8 @@ namespace JsonFileLocalization.Resource
             ILoggerFactory loggerFactory)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            _loggerFactory = loggerFactory;
+            _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+            _logger = loggerFactory.CreateLogger<JsonFileResourceManager>();
             _resourceFileWatcher = new FileSystemWatcher(settings.ResourcesPath)
             {
                 EnableRaisingEvents = true,
@@ -54,6 +56,7 @@ namespace JsonFileLocalization.Resource
                 _resourcePathCache.TryGet(filePath, out var key);
                 _resourcePathCache.Invalidate(filePath);
                 _resourceCache.Invalidate(key);
+                _logger.LogInformation("Deleted resource \"{path}\" with cache key \"{key}\" from cache", filePath, key);
             }
         }
 
