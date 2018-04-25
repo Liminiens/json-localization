@@ -72,7 +72,7 @@ namespace JsonFileLocalization.ObjectLocalization
             var value = result.ParseSuccess ? result.Value : default;
             if (result.ParseSuccess)
             {
-                _logger.LogInformation(
+                _logger.LogDebug(
                     "Retrieved object \"{name}\" of type \"{type}\" with value \"{value}\" from a resource \"{resource}\"",
                     name, typeof(TValue).FullName, result.Value, Resource.FilePath);
             }
