@@ -35,9 +35,14 @@ namespace JsonFileLocalization.ObjectLocalization
         /// <inheritdoc />
         public IObjectLocalizer Create(string baseName, string location)
         {
-            return new JsonFileObjectLocalizer(_loggerFactory, _resourceManager,
-                _resourceManager.GetResource(baseName, location, CultureInfo.CurrentUICulture),
-                _fileBasedLocalizationSettings, baseName, location);
+            var resource = _resourceManager.GetResource(baseName, location, CultureInfo.CurrentUICulture);
+            if (resource != null)
+            {
+                return new JsonFileObjectLocalizer(
+                    _loggerFactory, _resourceManager, resource,
+                    _fileBasedLocalizationSettings, baseName, location);
+            }
+            return null;
         }
     }
 }

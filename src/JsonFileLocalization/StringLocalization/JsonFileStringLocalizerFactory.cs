@@ -45,9 +45,14 @@ namespace JsonFileLocalization.StringLocalization
         public IStringLocalizer Create(string baseName, string location)
         {
             //location is a prefix to a resource name
-            return new JsonFileStringLocalizer(_loggerFactory,_resourceManager,
-                _resourceManager.GetResource(baseName, location, CultureInfo.CurrentUICulture),
-                _fileBasedLocalizationSettings, baseName, location);
+            var resource = _resourceManager.GetResource(baseName, location, CultureInfo.CurrentUICulture);
+            if (resource != null)
+            {
+                return new JsonFileStringLocalizer(
+                    _loggerFactory, _resourceManager, resource,
+                    _fileBasedLocalizationSettings, baseName, location);
+            }
+            return null;
         }
     }
 }

@@ -50,7 +50,13 @@ namespace JsonFileLocalization.ViewLocalization
         /// <inheritdoc />
         public IHtmlLocalizer WithCulture(CultureInfo culture)
         {
-            return new JsonFileHtmlLocalizer(_localizer.WithCulture(culture));
+            var stringLocalizer = _localizer.WithCulture(culture);
+            if (stringLocalizer != null)
+            {
+                return new JsonFileHtmlLocalizer(stringLocalizer);
+            }
+
+            return null;
         }
 
         /// <inheritdoc />

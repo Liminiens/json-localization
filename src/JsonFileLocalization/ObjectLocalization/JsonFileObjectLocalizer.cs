@@ -82,13 +82,14 @@ namespace JsonFileLocalization.ObjectLocalization
         /// <inheritdoc />
         public IObjectLocalizer WithCulture(CultureInfo culture)
         {
-            return new JsonFileObjectLocalizer(
-                _loggerFactory,
-                _resourceManager,
-                _resourceManager.GetResource(_baseName, _location, culture),
-                _localizationSettings,
-                _baseName,
-                _location);
+            var resource = _resourceManager.GetResource(_baseName, _location, culture);
+            if (resource != null)
+            {
+                return new JsonFileObjectLocalizer(
+                    _loggerFactory, _resourceManager, resource,
+                    _localizationSettings, _baseName, _location);
+            }
+            return null;
         }
     }
 }

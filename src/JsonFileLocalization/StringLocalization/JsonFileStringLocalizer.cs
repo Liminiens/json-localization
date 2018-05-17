@@ -156,9 +156,14 @@ namespace JsonFileLocalization.StringLocalization
         /// <inheritdoc />
         public virtual IStringLocalizer WithCulture(CultureInfo culture)
         {
-            return new JsonFileStringLocalizer(_loggerFactory, _resourceManager,
-                _resourceManager.GetResource(_baseName, _location, culture),
-                _localizationSettings, _baseName, _location);
+            var resource = _resourceManager.GetResource(_baseName, _location, culture);
+            if (resource != null)
+            {
+                return new JsonFileStringLocalizer(
+                    _loggerFactory, _resourceManager, resource,
+                    _localizationSettings, _baseName, _location);
+            }
+            return null;
         }
 
         /// <inheritdoc />

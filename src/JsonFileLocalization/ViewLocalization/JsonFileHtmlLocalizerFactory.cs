@@ -15,13 +15,23 @@ namespace JsonFileLocalization.ViewLocalization
         /// <inheritdoc />
         public IHtmlLocalizer Create(Type resourceSource)
         {
-            return new JsonFileHtmlLocalizer(_factory.Create(resourceSource));
+            var localizer = _factory.Create(resourceSource);
+            if (localizer != null)
+            {
+                return new JsonFileHtmlLocalizer(localizer);
+            }
+            return null;
         }
 
         /// <inheritdoc />
         public IHtmlLocalizer Create(string baseName, string location)
         {
-            return new JsonFileHtmlLocalizer(_factory.Create(baseName, location));
+            var localizer = _factory.Create(baseName, location);
+            if (localizer != null)
+            {
+                return new JsonFileHtmlLocalizer(localizer);
+            }
+            return null;
         }
     }
 }
