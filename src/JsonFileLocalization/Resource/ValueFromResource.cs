@@ -3,8 +3,8 @@
     /// <summary>
     /// Value from a resource
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
-    public class ValueFromResource<TValue>
+    /// <typeparam name="TValue">Value type</typeparam>
+    public readonly struct ValueFromResource<TValue>
     {
         /// <summary>
         /// Value

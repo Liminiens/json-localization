@@ -10,11 +10,11 @@ namespace JsonFileLocalization.Middleware
         /// <summary>
         /// Path, relative to resources folder
         /// </summary>
-        public string ResourceRelativePath { get; set; }
+        public string ResourceRelativePath { get; set; } = "Resources";
 
         /// <summary>
         /// Strategy for culture naming in file name
         /// </summary>
-        public JsonFileCultureSuffixStrategy CultureSuffixStrategy { get; set; }
+        public CultureSuffixStrategy CultureSuffixStrategy { get; set; } = CultureSuffixStrategy.TwoLetterISO6391AndCountryCode;
     }
 }

@@ -5,7 +5,7 @@ namespace JsonFileLocalization.Resource
     /// <summary>
     /// Strategy for culture naming in resource file name
     /// </summary>
-    public enum JsonFileCultureSuffixStrategy
+    public enum CultureSuffixStrategy
     {
         // ReSharper disable once InconsistentNaming
         /// <summary>

@@ -15,7 +15,7 @@ namespace JsonFileLocalization.Tests
         {
             //Arrange
             CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
-            var factory = TestJsonFileObjectLocalizerFactory.GetFactory(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var factory = TestJsonFileObjectLocalizerFactory.GetFactory(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
             var localizer = factory.Create("_Layout", String.Empty);
 
             //Act
@@ -34,7 +34,7 @@ namespace JsonFileLocalization.Tests
         {
             //Arrange
             CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
-            var factory = TestJsonFileObjectLocalizerFactory.GetFactory(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var factory = TestJsonFileObjectLocalizerFactory.GetFactory(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
             var localizer = factory.Create("_Layout", String.Empty);
 
             //Act
@@ -48,7 +48,5 @@ namespace JsonFileLocalization.Tests
             value.Should().Be("Something");
             usValue.Should().Be("Something en-US");
         }
-
-
     }
 }

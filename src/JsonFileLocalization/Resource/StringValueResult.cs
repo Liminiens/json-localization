@@ -5,7 +5,7 @@ namespace JsonFileLocalization.Resource
     /// <summary>
     /// String resource from a file
     /// </summary>
-    public class StringValueResult
+    public readonly struct StringValueResult
     {
         /// <summary>
         /// Path in a resource

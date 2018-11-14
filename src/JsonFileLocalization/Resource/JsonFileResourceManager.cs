@@ -13,7 +13,7 @@ namespace JsonFileLocalization.Resource
     /// </summary>
     public class JsonFileResourceManager : IJsonFileResourceManager, IDisposable
     {
-        private readonly IJsonFileLocalizationSettings _settings;
+        private readonly JsonFileLocalizationSettings _settings;
         private readonly ILoggerFactory _loggerFactory;
 
         private readonly ConcurrentDictionaryCache<string, JsonFileResource> _resourceCache
@@ -30,7 +30,7 @@ namespace JsonFileLocalization.Resource
         /// <param name="settings">settings for manager</param>
         /// <param name="loggerFactory">logger factory</param>
         public JsonFileResourceManager(
-            IJsonFileLocalizationSettings settings,
+            JsonFileLocalizationSettings settings,
             ILoggerFactory loggerFactory)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
@@ -39,11 +39,16 @@ namespace JsonFileLocalization.Resource
             _resourceFileWatcher = new FileSystemWatcher(settings.ResourcesPath)
             {
                 EnableRaisingEvents = true,
-                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName,
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.CreationTime,
                 IncludeSubdirectories = true,
                 Filter = "*.json"
             };
             _resourceFileWatcher.Changed += ResourceFileWatcherOnChanged;
+        }
+
+        ~JsonFileResourceManager()
+        {
+            Dispose();
         }
 
         private void ResourceFileWatcherOnChanged(object sender, FileSystemEventArgs fileSystemEventArgs)
@@ -77,10 +82,10 @@ namespace JsonFileLocalization.Resource
 
             switch (_settings.CultureSuffixStrategy)
             {
-                case JsonFileCultureSuffixStrategy.TwoLetterISO6391:
+                case CultureSuffixStrategy.TwoLetterISO6391:
                     fileNameBuilder.AppendFormat(".{0}", culture.TwoLetterISOLanguageName);
                     break;
-                case JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode:
+                case CultureSuffixStrategy.TwoLetterISO6391AndCountryCode:
                     fileNameBuilder.AppendFormat(".{0}", culture.Name);
                     break;
                 default:
@@ -148,6 +153,7 @@ namespace JsonFileLocalization.Resource
         public void Dispose()
         {
             _resourceFileWatcher.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -5,11 +5,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 /*
- * ResourceManagerStringLocalizerFactory source:
- * https://github.com/aspnet/Localization/blob/bab2a50ec1a780585ffa89756abd1d995b7f3f17/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizerFactory.cs
- *
- * HtmlLocalizerFactory source
- * https://github.com/aspnet/Mvc/blob/760c8f38678118734399c58c2dac981ea6e47046/src/Microsoft.AspNetCore.Mvc.Localization/HtmlLocalizerFactory.cs
+ * ResourceManagerStringLocalizerFactory HtmlLocalizerFactory
  */
 
 namespace JsonFileLocalization.StringLocalization
@@ -20,12 +16,12 @@ namespace JsonFileLocalization.StringLocalization
     public class JsonFileStringLocalizerFactory : IStringLocalizerFactory
     {
         private readonly ILoggerFactory _loggerFactory;
-        private readonly IJsonFileLocalizationSettings _fileBasedLocalizationSettings;
+        private readonly JsonFileLocalizationSettings _fileBasedLocalizationSettings;
         private readonly IJsonFileResourceManager _resourceManager;
 
         public JsonFileStringLocalizerFactory(
             ILoggerFactory loggerFactory,
-            IJsonFileLocalizationSettings fileBasedLocalizationSettings,
+            JsonFileLocalizationSettings fileBasedLocalizationSettings,
             IJsonFileResourceManager resourceManagerManager)
         {
             _loggerFactory = loggerFactory;

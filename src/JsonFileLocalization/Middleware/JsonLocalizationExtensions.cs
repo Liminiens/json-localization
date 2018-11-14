@@ -16,16 +16,10 @@ namespace JsonFileLocalization.Middleware
         /// Registers types for resource localization via json files
         /// </summary>
         /// <param name="services">service collection</param>
-        /// <param name="options">localization options</param>
         /// <returns></returns>
-        public static IServiceCollection AddJsonFileLocalization(
-            this IServiceCollection services, JsonLocalizationOptions options)
+        public static IServiceCollection AddJsonFileLocalization(this IServiceCollection services)
         {
-            services.AddSingleton<IJsonFileLocalizationSettings, JsonFileLocalizationSettings>(provider =>
-                new JsonFileLocalizationSettings(
-                    provider.GetService<IHostingEnvironment>(),
-                    options.CultureSuffixStrategy,
-                    options.ResourceRelativePath));
+            services.AddSingleton<JsonFileLocalizationSettings>();
             services.AddSingleton<IJsonFileResourceManager, JsonFileResourceManager>();
 
             services.AddTransient<IJsonFileContentCache, JsonFileContentCache>();

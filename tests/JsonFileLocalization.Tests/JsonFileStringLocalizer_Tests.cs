@@ -14,7 +14,7 @@ namespace JsonFileLocalization.Tests
         public void Indexer_WhenPassedCorrectPath_ReturnsString()
         {
             //Arrange
-            var factory = TestJsonFileStringLocalizerFactory.GetFactory(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var factory = TestJsonFileStringLocalizerFactory.GetFactory(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
             CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
 
             //Act
@@ -30,7 +30,7 @@ namespace JsonFileLocalization.Tests
         public void GetAllStrings_WhenCalled_ReturnsAllRootStrings()
         {
             //Arrange
-            var factory = TestJsonFileStringLocalizerFactory.GetFactory(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var factory = TestJsonFileStringLocalizerFactory.GetFactory(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
             CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
 
             //Act
@@ -45,7 +45,7 @@ namespace JsonFileLocalization.Tests
         public void GetAllStrings_WhenCalledWithParentCultures_ReturnsAllRootStrings()
         {
             //Arrange
-            var factory = TestJsonFileStringLocalizerFactory.GetFactory(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var factory = TestJsonFileStringLocalizerFactory.GetFactory(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
             CultureInfo.CurrentUICulture = new CultureInfo("ru-RU-Test");
 
             //Act
@@ -60,7 +60,7 @@ namespace JsonFileLocalization.Tests
         public void WithCulture_WhenCalled_ReturnsLocalizerWithCorrectCulture()
         {
             //Arrange
-            var factory = TestJsonFileStringLocalizerFactory.GetFactory(JsonFileCultureSuffixStrategy.TwoLetterISO6391);
+            var factory = TestJsonFileStringLocalizerFactory.GetFactory(CultureSuffixStrategy.TwoLetterISO6391);
             CultureInfo.CurrentUICulture = new CultureInfo("en");
 
             //Act
@@ -77,7 +77,7 @@ namespace JsonFileLocalization.Tests
         public void Indexer_WhenCalledWithFormatArguments_ReturnsFormattedString()
         {
             //Arrange
-            var factory = TestJsonFileStringLocalizerFactory.GetFactory(JsonFileCultureSuffixStrategy.TwoLetterISO6391);
+            var factory = TestJsonFileStringLocalizerFactory.GetFactory(CultureSuffixStrategy.TwoLetterISO6391);
             CultureInfo.CurrentUICulture = new CultureInfo("en");
 
             //Act

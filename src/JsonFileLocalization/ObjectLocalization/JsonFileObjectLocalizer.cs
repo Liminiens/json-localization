@@ -17,7 +17,7 @@ namespace JsonFileLocalization.ObjectLocalization
         /// <summary>
         /// Localization settings for application
         /// </summary>
-        private readonly IJsonFileLocalizationSettings _localizationSettings;
+        private readonly JsonFileLocalizationSettings _localizationSettings;
         /// <summary>
         /// Logger factory
         /// </summary>
@@ -44,7 +44,7 @@ namespace JsonFileLocalization.ObjectLocalization
             ILoggerFactory loggerFactory,
             IJsonFileResourceManager resourceManager,
             JsonFileResource resource,
-            IJsonFileLocalizationSettings localizationSettings,
+            JsonFileLocalizationSettings localizationSettings,
             string baseName,
             string location)
         {

@@ -14,7 +14,7 @@ namespace JsonFileLocalization.Tests
         public void Factory_WhenCreatesResourceFromType_ReturnsWorkingResource()
         {
             //Arrange
-            var factory = TestJsonFileStringLocalizerFactory.GetFactory(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var factory = TestJsonFileStringLocalizerFactory.GetFactory(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
             CultureInfo.CurrentUICulture = new CultureInfo("ru-RU");
 
             //Act

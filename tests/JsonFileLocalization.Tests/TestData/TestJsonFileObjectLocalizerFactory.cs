@@ -8,7 +8,7 @@ namespace JsonFileLocalization.Tests.TestData
 {
     public static class TestJsonFileObjectLocalizerFactory
     {
-        public static JsonFileObjectLocalizerFactory GetFactory(JsonFileCultureSuffixStrategy strategy)
+        public static JsonFileObjectLocalizerFactory GetFactory(CultureSuffixStrategy strategy)
         {
             var loggerFactory = Substitute.For<ILoggerFactory>();
             loggerFactory.CreateLogger<JsonFileStringLocalizer>()

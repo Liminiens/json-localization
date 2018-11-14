@@ -15,7 +15,7 @@ namespace JsonFileLocalization.Tests
         public void GetValue_WhenCalledWithCorrectPath_ReturnsCorrectValue()
         {
             //Arrange
-            var manager = TestJsonFileResourceManager.GetResourceManager(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var manager = TestJsonFileResourceManager.GetResourceManager(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
 
             //Act
             var resource = manager.GetResource("_Layout", String.Empty, new CultureInfo("ru-RU"));
@@ -35,7 +35,7 @@ namespace JsonFileLocalization.Tests
         {
             //Arrange
             var loggerFactory = TestJsonFileResourceManager.GetLoggerFactory();
-            var settings = TestJsonFileResourceManager.GetSettings(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var settings = TestJsonFileResourceManager.GetSettings(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
             var manager = new JsonFileResourceManager(settings, loggerFactory.Factory);
 
             //Act

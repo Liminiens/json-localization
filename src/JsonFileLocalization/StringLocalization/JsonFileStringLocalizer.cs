@@ -27,7 +27,7 @@ namespace JsonFileLocalization.StringLocalization
         /// <summary>
         /// Localization settings for application
         /// </summary>
-        private readonly IJsonFileLocalizationSettings _localizationSettings;
+        private readonly JsonFileLocalizationSettings _localizationSettings;
         /// <summary>
         /// Logger factory
         /// </summary>
@@ -54,7 +54,7 @@ namespace JsonFileLocalization.StringLocalization
             ILoggerFactory loggerFactory,
             IJsonFileResourceManager resourceManager,
             JsonFileResource resource,
-            IJsonFileLocalizationSettings localizationSettings,
+            JsonFileLocalizationSettings localizationSettings,
             string baseName,
             string location)
         {
@@ -114,7 +114,7 @@ namespace JsonFileLocalization.StringLocalization
                 throw new ArgumentNullException(nameof(name));
             }
             var value = GetString(name);
-            var formatted = System.String.Format(value.Value, arguments);
+            var formatted = String.Format(value.Value, arguments);
             return new LocalizedString(name, formatted, !value.ParseSuccess, Resource.ResourceName);
         }
 

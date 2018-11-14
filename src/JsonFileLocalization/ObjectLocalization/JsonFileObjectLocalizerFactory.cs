@@ -11,12 +11,12 @@ namespace JsonFileLocalization.ObjectLocalization
     public class JsonFileObjectLocalizerFactory : IObjectLocalizerFactory
     {
         private readonly ILoggerFactory _loggerFactory;
-        private readonly IJsonFileLocalizationSettings _fileBasedLocalizationSettings;
+        private readonly JsonFileLocalizationSettings _fileBasedLocalizationSettings;
         private readonly IJsonFileResourceManager _resourceManager;
 
         public JsonFileObjectLocalizerFactory(
             ILoggerFactory loggerFactory,
-            IJsonFileLocalizationSettings fileBasedLocalizationSettings,
+            JsonFileLocalizationSettings fileBasedLocalizationSettings,
             IJsonFileResourceManager resourceManagerManager)
         {
             _loggerFactory = loggerFactory;
