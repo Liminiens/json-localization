@@ -19,7 +19,7 @@ namespace JsonFileLocalization.Caching
         /// <param name="key">key</param>
         /// <param name="valueFactory">value factory which is called when there is no value</param>
         /// <returns></returns>
-        public virtual TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
+        public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
             return _cache.GetOrAdd(key, new Lazy<TValue>(valueFactory(key))).Value;
         }
@@ -28,7 +28,7 @@ namespace JsonFileLocalization.Caching
         /// Invalidate value in cache by key
         /// </summary>
         /// <param name="key">key</param>
-        public virtual void Invalidate(TKey key)
+        public void Invalidate(TKey key)
         {
             _cache.TryRemove(key, out _);
         }
@@ -39,7 +39,7 @@ namespace JsonFileLocalization.Caching
         /// <param name="key">key</param>
         /// <param name="value">value</param>
         /// <returns>if added successfully</returns>
-        public virtual bool TryAdd(TKey key, TValue value)
+        public bool TryAdd(TKey key, TValue value)
         {
             return _cache.TryAdd(key, new Lazy<TValue>(value));
         }
@@ -50,7 +50,7 @@ namespace JsonFileLocalization.Caching
         /// <param name="key">key</param>
         /// <param name="value">value</param>
         /// <returns>if assigned value to a <paramref name="value"/></returns>
-        public virtual bool TryGet(TKey key, out TValue value)
+        public bool TryGet(TKey key, out TValue value)
         {
             if (_cache.TryGetValue(key, out var lazyValue))
             {

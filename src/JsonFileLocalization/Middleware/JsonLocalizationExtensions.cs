@@ -3,7 +3,6 @@ using JsonFileLocalization.ObjectLocalization;
 using JsonFileLocalization.Resource;
 using JsonFileLocalization.StringLocalization;
 using JsonFileLocalization.ViewLocalization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -22,7 +21,6 @@ namespace JsonFileLocalization.Middleware
             services.AddSingleton<JsonFileLocalizationSettings>();
             services.AddSingleton<IJsonFileResourceManager, JsonFileResourceManager>();
 
-            services.AddTransient<IJsonFileContentCache, JsonFileContentCache>();
             services.AddTransient<IStringLocalizerFactory, JsonFileStringLocalizerFactory>();
             services.AddTransient(typeof(IStringLocalizer<>), typeof(JsonFileStringLocalizer<>));
             services.AddTransient<IObjectLocalizerFactory, JsonFileObjectLocalizerFactory>();

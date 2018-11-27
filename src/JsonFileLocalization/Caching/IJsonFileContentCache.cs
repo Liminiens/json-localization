@@ -14,6 +14,6 @@ namespace JsonFileLocalization.Caching
         /// <param name="key">JPath string</param>
         /// <param name="valueFactory">value factory for <see cref="JToken"/></param>
         /// <returns>A <see cref="JToken"/> from cache on this JPath</returns>
-        JToken GetOrAdd(string key, Func<string, JToken> valueFactory);
+        object GetOrAdd(string key, Func<string, object> valueFactory);
     }
 }

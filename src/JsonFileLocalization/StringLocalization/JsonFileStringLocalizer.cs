@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using JsonFileLocalization.Middleware;
 using JsonFileLocalization.Resource;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -134,8 +135,7 @@ namespace JsonFileLocalization.StringLocalization
                  * Example from ResourceManagerStringLocalizer:
                  * https://github.com/aspnet/Localization/blob/51549e8471c247f91d5ac57bd6f8f4c68508854b/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizer.cs#L236
                  */
-                while (!parentCulture.Equals(currentCulture)
-                       && !currentCulture.Parent.Equals(CultureInfo.InvariantCulture))
+                while (!parentCulture.Equals(currentCulture) && !currentCulture.Parent.Equals(CultureInfo.InvariantCulture))
                 {
                     var resource = _resourceManager.GetResource(_baseName, _location, parentCulture);
                     foreach (var str in resource.GetRootStrings())
@@ -167,12 +167,10 @@ namespace JsonFileLocalization.StringLocalization
         }
 
         /// <inheritdoc />
-        public virtual LocalizedString this[string name]
-            => GetLocalizedString(name);
+        public virtual LocalizedString this[string name] => GetLocalizedString(name);
 
 
         /// <inheritdoc />
-        public virtual LocalizedString this[string name, params object[] arguments]
-            => GetLocalizedString(name, arguments);
+        public virtual LocalizedString this[string name, params object[] arguments] => GetLocalizedString(name, arguments);
     }
 }

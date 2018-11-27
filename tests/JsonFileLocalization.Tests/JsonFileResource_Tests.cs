@@ -47,5 +47,21 @@ namespace JsonFileLocalization.Tests
             var loggerCalls = loggerFactory.LoggerCalls();
             loggerCalls.Count().Should().Be(1);
         }
+
+        [Fact]
+        public void GetValue_WhenFileIsInSubfolder_ReturnsResource()
+        {
+            //Arrange
+            var manager = TestJsonFileResourceManager.GetResourceManager(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+
+            //Act
+            var resource = manager.GetResource("_Layout", String.Empty, new CultureInfo("fr-CA"));
+            var resource2 = manager.GetResource("Some.Folder.Name", String.Empty, new CultureInfo("en-US"));
+            var resource3 = manager.GetResource("Some.Data.File", String.Empty, new CultureInfo("en-US"));
+
+            resource.GetValue<string>("Data").Value.Should().Be("Fr value");
+            resource2.GetValue<string>("Data").Value.Should().Be("Something");
+            resource3.GetValue<string>("Data").Value.Should().Be("Data value");
+        }
     }
 }

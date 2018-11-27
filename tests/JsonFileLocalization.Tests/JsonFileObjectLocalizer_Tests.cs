@@ -39,14 +39,12 @@ namespace JsonFileLocalization.Tests
 
             //Act
             var result = localizer.GetLocalizedObject<string>("TestObject.Value");
-            var value = result.Value;
             var usLocalizer = localizer.WithCulture(new CultureInfo("en-US"));
             var usLocalizerResult = usLocalizer.GetLocalizedObject<string>("TestObject.Value");
-            var usValue = usLocalizerResult.Value;
 
             //Assert
-            value.Should().Be("Something");
-            usValue.Should().Be("Something en-US");
+            result.Value.Should().Be("Something");
+            usLocalizerResult.Value.Should().Be("Something en-US");
         }
     }
 }

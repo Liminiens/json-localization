@@ -25,7 +25,7 @@ namespace JsonFileLocalization.ViewLocalization
         /// Creates a new <see cref="LocalizedHtmlString"/> for a <see cref="LocalizedString"/>.
         /// </summary>
         /// <param name="result">The <see cref="LocalizedString"/>.</param>
-        /// <param name="arguments">Format argumets</param>
+        /// <param name="arguments">Format arguments</param>
         protected virtual LocalizedHtmlString ToHtmlString(LocalizedString result, object[] arguments) =>
             new LocalizedHtmlString(result.Name, result.Value, result.ResourceNotFound, arguments);
 

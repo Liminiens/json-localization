@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
+@model JsonFileLocalization.Example.Model.IndexModel
+@{
+    string currentController = ViewContext.RouteData.Values["Controller"].ToString();
+    string currentAction = ViewContext.RouteData.Values["Action"].ToString();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hi</title>
+</head>
+<body>
+    <a asp-controller="@currentController" asp-action="@currentAction" asp-route-lang="en">To en</a>
+    <a asp-controller="@currentController" asp-action="@currentAction" asp-route-lang="ru">To ru</a>
+    <div>
+        <p>@ViewBag.Something</p>
+    </div>
+    <div>
+        <p>@Localizer["ViewData"]</p>
+    </div>
+</body>
+</html>

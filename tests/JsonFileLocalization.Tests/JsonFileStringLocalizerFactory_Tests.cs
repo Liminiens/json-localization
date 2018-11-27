@@ -9,7 +9,6 @@ namespace JsonFileLocalization.Tests
 {
     public class JsonFileStringLocalizerFactory_Tests
     {
-
         [Fact]
         public void Factory_WhenCreatesResourceFromType_ReturnsWorkingResource()
         {

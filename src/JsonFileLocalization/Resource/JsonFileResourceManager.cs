@@ -1,10 +1,12 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using JsonFileLocalization.Caching;
+﻿using JsonFileLocalization.Caching;
+using JsonFileLocalization.Middleware;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace JsonFileLocalization.Resource
 {
@@ -13,13 +15,13 @@ namespace JsonFileLocalization.Resource
     /// </summary>
     public class JsonFileResourceManager : IJsonFileResourceManager, IDisposable
     {
+        private readonly ResourceFileManager _fileManager = new ResourceFileManager();
+
         private readonly JsonFileLocalizationSettings _settings;
         private readonly ILoggerFactory _loggerFactory;
 
         private readonly ConcurrentDictionaryCache<string, JsonFileResource> _resourceCache
             = new ConcurrentDictionaryCache<string, JsonFileResource>();
-        private readonly ConcurrentDictionaryCache<string, string> _resourcePathCache
-            = new ConcurrentDictionaryCache<string, string>();
 
         private readonly FileSystemWatcher _resourceFileWatcher;
         private readonly ILogger<JsonFileResourceManager> _logger;
@@ -36,19 +38,32 @@ namespace JsonFileLocalization.Resource
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
             _logger = loggerFactory.CreateLogger<JsonFileResourceManager>();
-            _resourceFileWatcher = new FileSystemWatcher(settings.ResourcesPath)
+            if (settings.WatchForChanges)
             {
-                EnableRaisingEvents = true,
-                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.CreationTime,
-                IncludeSubdirectories = true,
-                Filter = "*.json"
-            };
-            _resourceFileWatcher.Changed += ResourceFileWatcherOnChanged;
+                _resourceFileWatcher = new FileSystemWatcher(settings.ResourcesPath)
+                {
+                    EnableRaisingEvents = true,
+                    NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.CreationTime,
+                    IncludeSubdirectories = true,
+                    Filter = "*.json"
+                };
+                _resourceFileWatcher.Changed += ResourceFileWatcherOnChanged;
+            }
         }
 
         ~JsonFileResourceManager()
         {
             Dispose();
+        }
+
+        private static JObject LoadFile(string path)
+        {
+            using (var fileStream = File.OpenRead(path))
+            using (var streamReader = new StreamReader(fileStream))
+            {
+                var content = streamReader.ReadToEnd();
+                return JObject.Parse(content);
+            }
         }
 
         private void ResourceFileWatcherOnChanged(object sender, FileSystemEventArgs fileSystemEventArgs)
@@ -59,10 +74,10 @@ namespace JsonFileLocalization.Resource
             if (fileChanged || fileDeleted || fileRenamed)
             {
                 var filePath = fileSystemEventArgs.FullPath;
-                if (_resourcePathCache.TryGet(filePath, out var key))
+                if (_resourceCache.TryGet(filePath, out var key))
                 {
-                    _resourcePathCache.Invalidate(filePath);
-                    _resourceCache.Invalidate(key);
+                    _resourceCache.Invalidate(_fileManager.GetResourceNameByPath(filePath));
+                    _settings.ContentCache.Invalidate(filePath);
                     _logger.LogInformation("Deleted resource \"{path}\" with cache key \"{key}\" from cache", filePath, key);
                 }
             }
@@ -88,71 +103,74 @@ namespace JsonFileLocalization.Resource
                 case CultureSuffixStrategy.TwoLetterISO6391AndCountryCode:
                     fileNameBuilder.AppendFormat(".{0}", culture.Name);
                     break;
-                default:
-                    break;
             }
             fileNameBuilder.Append(".json");
             return fileNameBuilder.ToString();
         }
 
-        private JsonFileResource CreateResource(string cacheKey,
-            JObject content, string baseName, string location, string path, CultureInfo culture)
+        private JsonFileResource CreateResource(
+            JObject content,
+            string baseName,
+            string location,
+            string path,
+            CultureInfo culture)
         {
-            _resourcePathCache.TryAdd(path, cacheKey);
+            var resourceNameBuilder = new StringBuilder();
+            if (!String.IsNullOrEmpty(location))
+            {
+                resourceNameBuilder.Append(location);
+                resourceNameBuilder.Append(".");
+            }
+            resourceNameBuilder.Append(baseName);
+
             return new JsonFileResource(
-                content, baseName, location, path, culture,
-                _loggerFactory.CreateLogger<JsonFileResource>());
-        }
-
-        private JObject LoadFile(string path)
-        {
-            using (var fileStream = File.OpenRead(path))
-            using (var streamReader = new StreamReader(fileStream))
-            {
-                var content = streamReader.ReadToEnd();
-                return JObject.Parse(content);
-            }
-        }
-        private JsonFileResource Create(string cacheKey, string baseName, string location, CultureInfo culture)
-        {
-            if (baseName == null)
-            {
-                throw new ArgumentNullException(nameof(baseName));
-            }
-            string path = Path.Combine(_settings.ResourcesPath, GetFileName(baseName.Trim(), location.Trim(), culture));
-            if (File.Exists(path))
-            {
-                return CreateResource(cacheKey, LoadFile(path), baseName, location, path, culture);
-            }
-            //try to find a file without a location in name
-            if (String.IsNullOrWhiteSpace(location))
-            {
-                _logger.LogDebug("Resource file with culture \"{culture}\" not found: \"{path}\"", culture.Name, path);
-                return null;
-            }
-            string noLocationPath = Path.Combine(_settings.ResourcesPath, GetFileName(baseName.Trim(), String.Empty, culture));
-
-            if (!File.Exists(noLocationPath))
-            {
-                _logger.LogDebug(
-                    "Resource file with culture \"{culture.Name}\" not found on paths: \"{path}\" and \"{noLocationPath}\"",
-                    culture.Name, path, noLocationPath);
-                return null;
-            }
-            return CreateResource(cacheKey, LoadFile(noLocationPath), baseName, String.Empty, path, culture);
+                content,
+                resourceNameBuilder.ToString(),
+                path,
+                culture,
+                _loggerFactory.CreateLogger<JsonFileResource>(),
+                _settings.ContentCache.GetContentCache(path));
         }
 
         /// <inheritdoc />
         public JsonFileResource GetResource(string baseName, string location, CultureInfo culture)
         {
-            string cacheKey = $"baseName={baseName};location={location};culture={culture.Name};";
-            return _resourceCache.GetOrAdd(cacheKey, key => Create(key, baseName, location, culture));
+            if (baseName == null)
+            {
+                throw new ArgumentNullException(nameof(baseName));
+            }
+
+            baseName = baseName.Trim();
+            location = location.Trim();
+
+            string path = Path.Combine(_settings.ResourcesPath, GetFileName(baseName, location, culture));
+
+            var pathFile = _fileManager.GetOrFindFile(path);
+            if (pathFile != null)
+            {
+                return _resourceCache.GetOrAdd(path, key => CreateResource(LoadFile(pathFile), baseName, location, path, culture));
+            }
+
+            //try to find a file without a location in name
+            if (String.IsNullOrWhiteSpace(location))
+            {
+                return null;
+            }
+
+            string noLocationPath = Path.Combine(_settings.ResourcesPath, GetFileName(baseName, String.Empty, culture));
+            var noLocationPathFile = _fileManager.GetOrFindFile(noLocationPath);
+            if (noLocationPathFile != null)
+            {
+                return _resourceCache.GetOrAdd(noLocationPath, key => CreateResource(LoadFile(noLocationPathFile), baseName, String.Empty, noLocationPath, culture));
+            }
+
+            return null;
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            _resourceFileWatcher.Dispose();
+            _resourceFileWatcher?.Dispose();
             GC.SuppressFinalize(this);
         }
     }

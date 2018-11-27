@@ -27,11 +27,9 @@ namespace JsonFileLocalization.StringLocalization
         }
 
         /// <inheritdoc />
-        public LocalizedString this[string name]
-            => _localizer[name];
+        public LocalizedString this[string name] => _localizer[name];
 
         /// <inheritdoc />
-        public LocalizedString this[string name, params object[] arguments]
-            => _localizer[name, arguments];
+        public LocalizedString this[string name, params object[] arguments] => _localizer[name, arguments];
     }
 }

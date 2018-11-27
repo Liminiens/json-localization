@@ -1,9 +1,10 @@
 ﻿using System.IO;
-using JsonFileLocalization.Middleware;
+using JsonFileLocalization.Caching;
+using JsonFileLocalization.Resource;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 
-namespace JsonFileLocalization.Resource
+namespace JsonFileLocalization.Middleware
 {
     /// <summary>
     /// Localization settings for <see cref="JsonFileResourceManager"/>
@@ -21,16 +22,29 @@ namespace JsonFileLocalization.Resource
         public CultureSuffixStrategy CultureSuffixStrategy { get; }
 
         /// <summary>
+        /// Cache provider for localization files content
+        /// </summary>
+        public IJsonFileCacheProvider ContentCache { get; }
+
+        /// <summary>
+        /// Watch for file changes
+        /// </summary>
+        public bool WatchForChanges { get; }
+
+        /// <summary>
         /// Creates a <see cref="JsonFileLocalizationSettings"/>
         /// </summary>
         /// <param name="environment">application environment service</param>
-        /// <param name="options">localization options</param>
+        /// <param name="localizationOptions">localization options</param>
         public JsonFileLocalizationSettings(
             IHostingEnvironment environment,
-            IOptions<JsonLocalizationOptions> options)
+            IOptions<JsonLocalizationOptions> localizationOptions)
         {
-            CultureSuffixStrategy = options.Value.CultureSuffixStrategy;
-            ResourcesPath = Path.Combine(environment.ContentRootPath, options.Value.ResourceRelativePath);
+            var options = localizationOptions.Value ?? new JsonLocalizationOptions();
+            ContentCache = options.ContentCache;
+            CultureSuffixStrategy = options.CultureSuffixStrategy;
+            WatchForChanges = options.WatchForChanges;
+            ResourcesPath = Path.Combine(environment.ContentRootPath, options.ResourceRelativePath);
         }
     }
 }

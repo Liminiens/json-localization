@@ -1,11 +1,11 @@
-﻿using System;
+﻿using JsonFileLocalization.Caching;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using JsonFileLocalization.Caching;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 
 namespace JsonFileLocalization.Resource
 {
@@ -15,10 +15,8 @@ namespace JsonFileLocalization.Resource
     public class JsonFileResource
     {
         private readonly JObject _content;
-        private readonly string _baseName;
-        private readonly string _location;
         private readonly ILogger<JsonFileResource> _logger;
-        private readonly IJsonFileContentCache _contentCache = new JsonFileContentCache();
+        private readonly IJsonFileContentCache _contentCache;
 
         /// <summary>
         /// Path to a resource file
@@ -34,34 +32,25 @@ namespace JsonFileLocalization.Resource
         /// Creates a <see cref="JsonFileResource"/>
         /// </summary>
         /// <param name="content">parsed content of a file</param>
-        /// <param name="baseName">resource name</param>
-        /// <param name="location">location of a resource</param>
+        /// <param name="resourceName">resource name</param>
         /// <param name="filePath">file path to a resource</param>
         /// <param name="culture">culture of a resource</param>
         /// <param name="logger">logger</param>
+        /// <param name="contentCache">file content cache</param>
         public JsonFileResource(
             JObject content,
-            string baseName,
-            string location,
+            string resourceName,
             string filePath,
             CultureInfo culture,
-            ILogger<JsonFileResource> logger)
+            ILogger<JsonFileResource> logger,
+            IJsonFileContentCache contentCache)
         {
             _content = content ?? throw new ArgumentNullException(nameof(content));
-            _baseName = baseName;
-            _location = location;
             FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
             Culture = culture ?? throw new ArgumentNullException(nameof(culture));
-            _logger = logger;
-
-            var resourceNameBuilder = new StringBuilder();
-            if (!String.IsNullOrEmpty(_location))
-            {
-                resourceNameBuilder.Append(_location);
-                resourceNameBuilder.Append(".");
-            }
-            resourceNameBuilder.Append(_baseName);
-            ResourceName = resourceNameBuilder.ToString();
+            _contentCache = contentCache ?? throw new ArgumentNullException(nameof(contentCache));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            ResourceName = resourceName;
         }
 
         /// <summary>
@@ -79,8 +68,10 @@ namespace JsonFileLocalization.Resource
         {
             try
             {
-                var value = _contentCache.GetOrAdd($"path={path}",
-                    _ => _content.SelectToken(path)).ToObject<TValue>();
+                var value = (TValue)_contentCache.GetOrAdd(
+                    $"resource={ResourceName};path={path};type={typeof(TValue).Name}",
+                    _ => _content.SelectToken(path).ToObject<TValue>());
+
                 return new ValueFromResource<TValue>(value, true);
             }
             catch (Exception e)
