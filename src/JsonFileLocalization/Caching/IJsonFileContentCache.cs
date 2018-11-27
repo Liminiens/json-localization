@@ -4,16 +4,16 @@ using Newtonsoft.Json.Linq;
 namespace JsonFileLocalization.Caching
 {
     /// <summary>
-    /// Service for caching JPath results
+    /// Service for caching json file content
     /// </summary>
     public interface IJsonFileContentCache
     {
         /// <summary>
-        /// Get or add a new JPath result to cache
+        /// Get or add a new item to cache
         /// </summary>
-        /// <param name="key">JPath string</param>
-        /// <param name="valueFactory">value factory for <see cref="JToken"/></param>
-        /// <returns>A <see cref="JToken"/> from cache on this JPath</returns>
+        /// <param name="key">key</param>
+        /// <param name="valueFactory">value factory for key</param>
+        /// <returns>value for this key</returns>
         object GetOrAdd(string key, Func<string, object> valueFactory);
     }
 }

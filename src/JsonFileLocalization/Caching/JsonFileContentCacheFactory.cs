@@ -1,8 +1,6 @@
-﻿using System.Collections.Concurrent;
-
-namespace JsonFileLocalization.Caching
+﻿namespace JsonFileLocalization.Caching
 {
-    public class JsonFileCacheProvider : IJsonFileCacheProvider
+    public class JsonFileContentCacheFactory : IJsonFileContentCacheFactory
     {
         private readonly ConcurrentDictionaryCache<string, IJsonFileContentCache> _cacheProvider =
             new ConcurrentDictionaryCache<string, IJsonFileContentCache>();

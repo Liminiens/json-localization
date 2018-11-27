@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace JsonFileLocalization.Resource
@@ -15,15 +14,15 @@ namespace JsonFileLocalization.Resource
     /// </summary>
     public class JsonFileResourceManager : IJsonFileResourceManager, IDisposable
     {
+        private bool _disposed = false;
+        private readonly FileSystemWatcher _resourceFileWatcher;
         private readonly ResourceFileManager _fileManager = new ResourceFileManager();
 
         private readonly JsonFileLocalizationSettings _settings;
-        private readonly ILoggerFactory _loggerFactory;
-
         private readonly ConcurrentDictionaryCache<string, JsonFileResource> _resourceCache
             = new ConcurrentDictionaryCache<string, JsonFileResource>();
 
-        private readonly FileSystemWatcher _resourceFileWatcher;
+        private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger<JsonFileResourceManager> _logger;
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace JsonFileLocalization.Resource
                 _resourceFileWatcher = new FileSystemWatcher(settings.ResourcesPath)
                 {
                     EnableRaisingEvents = true,
-                    NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.CreationTime,
+                    NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime | NotifyFilters.Size,
                     IncludeSubdirectories = true,
                     Filter = "*.json"
                 };
@@ -69,17 +68,12 @@ namespace JsonFileLocalization.Resource
         private void ResourceFileWatcherOnChanged(object sender, FileSystemEventArgs fileSystemEventArgs)
         {
             var fileChanged = fileSystemEventArgs.ChangeType.HasFlag(WatcherChangeTypes.Changed);
-            var fileRenamed = fileSystemEventArgs.ChangeType.HasFlag(WatcherChangeTypes.Renamed);
-            var fileDeleted = fileSystemEventArgs.ChangeType.HasFlag(WatcherChangeTypes.Deleted);
-            if (fileChanged || fileDeleted || fileRenamed)
+            if (fileChanged)
             {
                 var filePath = fileSystemEventArgs.FullPath;
-                if (_resourceCache.TryGet(filePath, out var key))
-                {
-                    _resourceCache.Invalidate(_fileManager.GetResourceNameByPath(filePath));
-                    _settings.ContentCache.Invalidate(filePath);
-                    _logger.LogInformation("Deleted resource \"{path}\" with cache key \"{key}\" from cache", filePath, key);
-                }
+                _resourceCache.Invalidate(filePath);
+                _settings.ContentCacheFactory.Invalidate(filePath);
+                _logger.LogInformation("Deleted resource \"{path}\" from cache", filePath);
             }
         }
 
@@ -129,7 +123,7 @@ namespace JsonFileLocalization.Resource
                 path,
                 culture,
                 _loggerFactory.CreateLogger<JsonFileResource>(),
-                _settings.ContentCache.GetContentCache(path));
+                _settings.ContentCacheFactory.GetContentCache(path));
         }
 
         /// <inheritdoc />
@@ -143,12 +137,10 @@ namespace JsonFileLocalization.Resource
             baseName = baseName.Trim();
             location = location.Trim();
 
-            string path = Path.Combine(_settings.ResourcesPath, GetFileName(baseName, location, culture));
-
-            var pathFile = _fileManager.GetOrFindFile(path);
-            if (pathFile != null)
+            var path = _fileManager.GetOrFindFile(Path.Combine(_settings.ResourcesPath, GetFileName(baseName, location, culture)));
+            if (path != null)
             {
-                return _resourceCache.GetOrAdd(path, key => CreateResource(LoadFile(pathFile), baseName, location, path, culture));
+                return _resourceCache.GetOrAdd(path, key => CreateResource(LoadFile(path), baseName, location, path, culture));
             }
 
             //try to find a file without a location in name
@@ -157,11 +149,10 @@ namespace JsonFileLocalization.Resource
                 return null;
             }
 
-            string noLocationPath = Path.Combine(_settings.ResourcesPath, GetFileName(baseName, String.Empty, culture));
-            var noLocationPathFile = _fileManager.GetOrFindFile(noLocationPath);
-            if (noLocationPathFile != null)
+            var noLocationPath = _fileManager.GetOrFindFile(Path.Combine(_settings.ResourcesPath, GetFileName(baseName, String.Empty, culture)));
+            if (noLocationPath != null)
             {
-                return _resourceCache.GetOrAdd(noLocationPath, key => CreateResource(LoadFile(noLocationPathFile), baseName, String.Empty, noLocationPath, culture));
+                return _resourceCache.GetOrAdd(noLocationPath, key => CreateResource(LoadFile(noLocationPath), baseName, String.Empty, noLocationPath, culture));
             }
 
             return null;
@@ -170,6 +161,7 @@ namespace JsonFileLocalization.Resource
         /// <inheritdoc />
         public void Dispose()
         {
+            _resourceFileWatcher.Changed -= ResourceFileWatcherOnChanged;
             _resourceFileWatcher?.Dispose();
             GC.SuppressFinalize(this);
         }

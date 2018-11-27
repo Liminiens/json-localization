@@ -24,7 +24,7 @@ namespace JsonFileLocalization.Middleware
         /// <summary>
         /// Cache provider for localization files content
         /// </summary>
-        public IJsonFileCacheProvider ContentCache { get; }
+        public IJsonFileContentCacheFactory ContentCacheFactory { get; }
 
         /// <summary>
         /// Watch for file changes
@@ -41,7 +41,7 @@ namespace JsonFileLocalization.Middleware
             IOptions<JsonLocalizationOptions> localizationOptions)
         {
             var options = localizationOptions.Value ?? new JsonLocalizationOptions();
-            ContentCache = options.ContentCache;
+            ContentCacheFactory = options.ContentCacheFactory;
             CultureSuffixStrategy = options.CultureSuffixStrategy;
             WatchForChanges = options.WatchForChanges;
             ResourcesPath = Path.Combine(environment.ContentRootPath, options.ResourceRelativePath);

@@ -1,8 +1,5 @@
-﻿using JsonFileLocalization.Middleware;
-using JsonFileLocalization.Resource;
-using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace JsonFileLocalization.Example.Controllers
 {

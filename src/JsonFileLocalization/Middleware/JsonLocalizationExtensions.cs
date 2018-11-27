@@ -1,5 +1,4 @@
-﻿using JsonFileLocalization.Caching;
-using JsonFileLocalization.ObjectLocalization;
+﻿using JsonFileLocalization.ObjectLocalization;
 using JsonFileLocalization.Resource;
 using JsonFileLocalization.StringLocalization;
 using JsonFileLocalization.ViewLocalization;
@@ -9,6 +8,9 @@ using Microsoft.Extensions.Localization;
 
 namespace JsonFileLocalization.Middleware
 {
+    /// <summary>
+    /// MVC middleware extensions
+    /// </summary>
     public static class JsonLocalizationExtensions
     {
         /// <summary>

@@ -1,14 +1,13 @@
-﻿using System;
+﻿using JsonFileLocalization.Resource.Utility;
+using System;
 using System.IO;
 using System.Linq;
-using JsonFileLocalization.Caching;
 
 namespace JsonFileLocalization.Resource
 {
-    public class ResourceFileManager
+    internal class ResourceFileManager
     {
-        private readonly ConcurrentDictionaryCache<string, string> _pathCache =
-            new ConcurrentDictionaryCache<string, string>();
+        private readonly BiDictionary<string, string> _cache = new BiDictionary<string, string>();
 
         private static string FindFile(string resource)
         {
@@ -36,21 +35,29 @@ namespace JsonFileLocalization.Resource
 
         public string GetOrFindFile(string resource)
         {
-            if (!_pathCache.TryGet(resource, out var value))
+            lock (_cache)
             {
-                var path = FindFile(resource);
-                if (path != null && !_pathCache.TryAdd(resource, path))
+                if (!_cache.TryGetByFirst(resource, out var value))
                 {
-                    return GetOrFindFile(resource);
+                    var path = FindFile(resource);
+                    if (path != null)
+                    {
+                        _cache.Add(resource, path);
+                        return path;
+                    }
+                    return null;
                 }
+                return value;
             }
-            return value;
         }
 
         public string GetResourceNameByPath(string path)
         {
-            _pathCache.TryGet(path, out var resourceName);
-            return resourceName;
+            lock (_cache)
+            {
+                _cache.TryGetBySecond(path, out var resource);
+                return resource;
+            }
         }
     }
 }

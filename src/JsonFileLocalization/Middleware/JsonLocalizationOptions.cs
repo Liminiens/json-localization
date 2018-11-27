@@ -21,7 +21,7 @@ namespace JsonFileLocalization.Middleware
         /// <summary>
         /// Cache provider for localization files content
         /// </summary>
-        public IJsonFileCacheProvider ContentCache { get; set; } = new JsonFileCacheProvider();
+        public IJsonFileContentCacheFactory ContentCacheFactory { get; set; } = new JsonFileContentCacheFactory();
 
         /// <summary>
         /// Watch for file changes
