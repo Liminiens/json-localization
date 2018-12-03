@@ -161,8 +161,11 @@ namespace JsonFileLocalization.Resource
         /// <inheritdoc />
         public void Dispose()
         {
-            _resourceFileWatcher.Changed -= ResourceFileWatcherOnChanged;
-            _resourceFileWatcher?.Dispose();
+            if (_resourceFileWatcher != null)
+            {
+                _resourceFileWatcher.Changed -= ResourceFileWatcherOnChanged;
+                _resourceFileWatcher.Dispose();
+            }
             GC.SuppressFinalize(this);
         }
     }
