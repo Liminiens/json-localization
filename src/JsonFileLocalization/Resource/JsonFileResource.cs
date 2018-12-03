@@ -93,7 +93,7 @@ namespace JsonFileLocalization.Resource
                         property.Value.Type != JTokenType.Array
                         && property.Value.Type != JTokenType.Object
                         && property.Value.Type != JTokenType.Property)
-                    .Select(x => new StringFromResource(x.Path, x.Name, x.Value.Value<string>()))
+                    .Select(x => new StringFromResource(x.Path, x.Value.Value<string>()))
                     .ToList();
             });
         }
