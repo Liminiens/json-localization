@@ -6,7 +6,7 @@ namespace JsonFileLocalization.ViewLocalization
     /// <summary>
     /// Extended <see cref="IViewLocalizer"/> service
     /// </summary>
-    public interface IViewLocalizerExtended : IViewLocalizer, IObjectLocalizer
+    public interface IViewExtendedLocalizer : IViewLocalizer, IObjectLocalizer
     {
     }
 }

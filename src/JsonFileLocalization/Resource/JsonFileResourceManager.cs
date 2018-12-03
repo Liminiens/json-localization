@@ -14,9 +14,8 @@ namespace JsonFileLocalization.Resource
     /// </summary>
     public class JsonFileResourceManager : IJsonFileResourceManager, IDisposable
     {
-        private bool _disposed = false;
         private readonly FileSystemWatcher _resourceFileWatcher;
-        private readonly ResourceFileManager _fileManager = new ResourceFileManager();
+        private readonly FilePathCache _filePathCache = new FilePathCache();
 
         private readonly JsonFileLocalizationSettings _settings;
         private readonly ConcurrentDictionaryCache<string, JsonFileResource> _resourceCache
@@ -72,7 +71,6 @@ namespace JsonFileLocalization.Resource
             {
                 var filePath = fileSystemEventArgs.FullPath;
                 _resourceCache.Invalidate(filePath);
-                _settings.ContentCacheFactory.Invalidate(filePath);
                 _logger.LogInformation("Deleted resource \"{path}\" from cache", filePath);
             }
         }
@@ -123,7 +121,7 @@ namespace JsonFileLocalization.Resource
                 path,
                 culture,
                 _loggerFactory.CreateLogger<JsonFileResource>(),
-                _settings.ContentCacheFactory.GetContentCache(path));
+                _settings.ContentCacheFactory);
         }
 
         /// <inheritdoc />
@@ -137,7 +135,7 @@ namespace JsonFileLocalization.Resource
             baseName = baseName.Trim();
             location = location.Trim();
 
-            var path = _fileManager.GetOrFindFile(Path.Combine(_settings.ResourcesPath, GetFileName(baseName, location, culture)));
+            var path = _filePathCache.GetOrFindFile(Path.Combine(_settings.ResourcesPath, GetFileName(baseName, location, culture)));
             if (path != null)
             {
                 return _resourceCache.GetOrAdd(path, key => CreateResource(LoadFile(path), baseName, location, path, culture));
@@ -149,7 +147,7 @@ namespace JsonFileLocalization.Resource
                 return null;
             }
 
-            var noLocationPath = _fileManager.GetOrFindFile(Path.Combine(_settings.ResourcesPath, GetFileName(baseName, String.Empty, culture)));
+            var noLocationPath = _filePathCache.GetOrFindFile(Path.Combine(_settings.ResourcesPath, GetFileName(baseName, String.Empty, culture)));
             if (noLocationPath != null)
             {
                 return _resourceCache.GetOrAdd(noLocationPath, key => CreateResource(LoadFile(noLocationPath), baseName, String.Empty, noLocationPath, culture));

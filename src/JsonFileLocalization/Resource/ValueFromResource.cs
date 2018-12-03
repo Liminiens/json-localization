@@ -4,7 +4,7 @@
     /// Value from a resource
     /// </summary>
     /// <typeparam name="TValue">Value type</typeparam>
-    public readonly struct ValueFromResource<TValue>
+    public class ValueFromResource<TValue>
     {
         /// <summary>
         /// Value

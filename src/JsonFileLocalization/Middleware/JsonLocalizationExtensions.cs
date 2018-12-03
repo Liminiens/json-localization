@@ -30,8 +30,8 @@ namespace JsonFileLocalization.Middleware
 
             services.AddTransient<IHtmlLocalizerFactory, JsonFileHtmlLocalizerFactory>();
             services.AddTransient(typeof(IHtmlLocalizer<>), typeof(JsonFileHtmlLocalizer<>));
-            services.AddTransient<IViewLocalizer, JsonViewLocalizer>();
-            services.AddTransient<IViewLocalizerExtended, JsonViewLocalizer>();
+            services.AddTransient<IViewLocalizer, JsonFileViewExtendedLocalizer>();
+            services.AddTransient<IViewExtendedLocalizer, JsonFileViewExtendedLocalizer>();
 
             return services;
         }

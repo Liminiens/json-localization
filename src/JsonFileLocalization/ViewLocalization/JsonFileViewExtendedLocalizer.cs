@@ -12,15 +12,10 @@ using Microsoft.Extensions.Localization;
 
 namespace JsonFileLocalization.ViewLocalization
 {
-    /*
-     * ViewLocalizer source
-     * https://github.com/aspnet/Mvc/blob/760c8f38678118734399c58c2dac981ea6e47046/src/Microsoft.AspNetCore.Mvc.Localization/ViewLocalizer.cs
-     */
-
     /// <summary>
     /// Service for Razor View localizing
     /// </summary>
-    public class JsonViewLocalizer : IViewLocalizerExtended, IViewContextAware
+    public class JsonFileViewExtendedLocalizer : IViewExtendedLocalizer, IViewContextAware
     {
         private readonly IHtmlLocalizerFactory _htmlLocalizerFactory;
         private readonly IObjectLocalizerFactory _objectLocalizerFactory;
@@ -29,11 +24,11 @@ namespace JsonFileLocalization.ViewLocalization
         private string _viewPrefix = String.Empty;
 
         /// <summary>
-        /// Creates a new <see cref="JsonViewLocalizer"/>
+        /// Creates a new <see cref="JsonFileViewExtendedLocalizer"/>
         /// </summary>
         /// <param name="htmlLocalizerFactory">A factory of <see cref="IHtmlLocalizer"/></param>
         /// <param name="objectLocalizerFactory">A factory of <see cref="IObjectLocalizer"/></param>
-        public JsonViewLocalizer(IHtmlLocalizerFactory htmlLocalizerFactory, IObjectLocalizerFactory objectLocalizerFactory)
+        public JsonFileViewExtendedLocalizer(IHtmlLocalizerFactory htmlLocalizerFactory, IObjectLocalizerFactory objectLocalizerFactory)
         {
             _htmlLocalizerFactory = htmlLocalizerFactory ?? throw new ArgumentNullException(nameof(htmlLocalizerFactory));
             _objectLocalizerFactory = objectLocalizerFactory ?? throw new ArgumentNullException(nameof(objectLocalizerFactory));

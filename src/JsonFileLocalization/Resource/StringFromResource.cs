@@ -5,7 +5,7 @@ namespace JsonFileLocalization.Resource
     /// <summary>
     /// String resource from a file
     /// </summary>
-    public readonly struct StringValueResult
+    public class StringFromResource
     {
         /// <summary>
         /// Path in a resource
@@ -22,7 +22,7 @@ namespace JsonFileLocalization.Resource
         /// </summary>
         public readonly string Value;
 
-        public StringValueResult(string path, string name, string value)
+        public StringFromResource(string path, string name, string value)
         {
             Path = path ?? throw new ArgumentNullException(nameof(path));
             Name = name ?? throw new ArgumentNullException(nameof(name));

@@ -1,21 +1,22 @@
-﻿using JsonFileLocalization.Resource.Utility;
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 
 namespace JsonFileLocalization.Resource
 {
-    internal class ResourceFileManager
+    internal class FilePathCache
     {
-        private readonly BiDictionary<string, string> _cache = new BiDictionary<string, string>();
+        private readonly ConcurrentDictionary<string, string> _cache = new ConcurrentDictionary<string, string>();
 
-        private static string FindFile(string resource)
+        public static string FindFile(string resource)
         {
             var fileName = Path.GetFileName(resource);
             var directory = Path.GetDirectoryName(resource);
             var parts = fileName.Split('.');
             for (int i = 0; i < parts.Length; i++)
             {
+                //single directory with dots in name
                 var directoryPart = String.Join(".", parts.Take(i + 1));
                 var filePart = String.Join(".", parts.Skip(i + 1));
                 var filePath = Path.Combine(directory, directoryPart, filePart);
@@ -23,6 +24,7 @@ namespace JsonFileLocalization.Resource
                 {
                     return filePath;
                 }
+                //directory tree
                 var directories = String.Join(Path.DirectorySeparatorChar, parts.Take(i + 1));
                 filePath = Path.Combine(directory, directories, filePart);
                 if (File.Exists(filePath))
@@ -35,29 +37,20 @@ namespace JsonFileLocalization.Resource
 
         public string GetOrFindFile(string resource)
         {
-            lock (_cache)
+            if (!_cache.TryGetValue(resource, out var value))
             {
-                if (!_cache.TryGetByFirst(resource, out var value))
+                var path = FindFile(resource);
+                if (path != null)
                 {
-                    var path = FindFile(resource);
-                    if (path != null)
+                    if (!_cache.TryAdd(resource, path))
                     {
-                        _cache.Add(resource, path);
-                        return path;
+                        return GetOrFindFile(resource);
                     }
-                    return null;
+                    return path;
                 }
-                return value;
+                return null;
             }
-        }
-
-        public string GetResourceNameByPath(string path)
-        {
-            lock (_cache)
-            {
-                _cache.TryGetBySecond(path, out var resource);
-                return resource;
-            }
+            return value;
         }
     }
 }

@@ -35,19 +35,19 @@ namespace JsonFileLocalization.Resource
         /// <param name="filePath">file path to a resource</param>
         /// <param name="culture">culture of a resource</param>
         /// <param name="logger">logger</param>
-        /// <param name="contentCache">file content cache</param>
+        /// <param name="cacheFactory">file content cache factory</param>
         public JsonFileResource(
             JObject content,
             string resourceName,
             string filePath,
             CultureInfo culture,
             ILogger<JsonFileResource> logger,
-            IJsonFileContentCache contentCache)
+            IJsonFileContentCacheFactory cacheFactory)
         {
             _content = content ?? throw new ArgumentNullException(nameof(content));
             FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
             Culture = culture ?? throw new ArgumentNullException(nameof(culture));
-            _contentCache = contentCache ?? throw new ArgumentNullException(nameof(contentCache));
+            _contentCache = cacheFactory.Create() ?? throw new ArgumentNullException(nameof(cacheFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             ResourceName = resourceName;
         }
@@ -84,14 +84,18 @@ namespace JsonFileLocalization.Resource
         /// Returns string values from properties that are direct root descendants
         /// </summary>
         /// <returns>Enumeration of string values from properties that are direct root descendants</returns>
-        public IEnumerable<StringValueResult> GetRootStrings()
+        public IEnumerable<StringFromResource> GetRootStrings()
         {
-            var properties = _content.Properties()
-                .Where(property =>
-                    property.Value.Type != JTokenType.Array
-                    && property.Value.Type != JTokenType.Object
-                    && property.Value.Type != JTokenType.Property);
-            return properties.Select(x => new StringValueResult(x.Path, x.Name, x.Value.Value<string>()));
+            return (IEnumerable<StringFromResource>)_contentCache.GetOrAdd($"resource={ResourceName};all_strings", key =>
+            {
+                return _content.Properties()
+                    .Where(property =>
+                        property.Value.Type != JTokenType.Array
+                        && property.Value.Type != JTokenType.Object
+                        && property.Value.Type != JTokenType.Property)
+                    .Select(x => new StringFromResource(x.Path, x.Name, x.Value.Value<string>()))
+                    .ToList();
+            });
         }
 
         protected bool Equals(JsonFileResource other)
