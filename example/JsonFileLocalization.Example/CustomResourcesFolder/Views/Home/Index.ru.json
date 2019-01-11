@@ -1,3 +1,7 @@
 {
-  "ViewData": "Russian View localization"
+  "ViewData": "Russian View localization",
+  "Data": [
+    "First russian string",
+    "Second russian string"
+  ]
 }

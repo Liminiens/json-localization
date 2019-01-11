@@ -1,7 +1,10 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
-
-@inject IViewLocalizer Localizer
-
+﻿@using JsonFileLocalization.ViewLocalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@{
+    @inject IViewLocalizer Localizer
+    //or you can use extended localizer with json support json
+    @inject IViewExtendedLocalizer ExtendedLocalizer
+}
 @model JsonFileLocalization.Example.Model.IndexModel
 @{
     string currentController = ViewContext.RouteData.Values["Controller"].ToString();
@@ -21,5 +24,11 @@
     <div>
         <p>@Localizer["ViewData"]</p>
     </div>
+<div>
+    @foreach (var str in ExtendedLocalizer.GetLocalizedObject<string[]>("Data").Value)
+    {
+        <p>@str</p>
+    }
+</div>
 </body>
 </html>
