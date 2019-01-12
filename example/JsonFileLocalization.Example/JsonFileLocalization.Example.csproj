@@ -15,13 +15,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="CustomResourcesFolder\JsonFileLocalization.Example\Controllers.HomeController.ru.json" />
-    <None Remove="CustomResourcesFolder\Views\Home\Index.ru.json" />
-    <None Remove="CustomResourcesFolder\Views\_ViewImports.cshtml" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\..\src\JsonFileLocalization\JsonFileLocalization.csproj" />
   </ItemGroup>

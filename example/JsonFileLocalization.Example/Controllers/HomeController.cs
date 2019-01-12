@@ -18,11 +18,5 @@ namespace JsonFileLocalization.Example.Controllers
             ViewBag.Something = _localizer["Something"];
             return View("Index");
         }
-
-        [HttpGet]
-        public RedirectToActionResult RedirectToDefaultLanguage()
-        {
-            return RedirectToAction("Index", new { lang = CurrentLanguage });
-        }
     }
 }

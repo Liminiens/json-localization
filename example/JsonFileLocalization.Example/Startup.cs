@@ -67,16 +67,9 @@ namespace JsonFileLocalization.Example
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
+            app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseRequestLocalization();
             app.UseMvc(ConfigureRoutes);
@@ -85,7 +78,7 @@ namespace JsonFileLocalization.Example
         private void ConfigureRoutes(IRouteBuilder routes)
         {
             routes.MapRoute(
-                name: "LocalizedDefault",
+                name: "localized",
                 template: "{lang:lang}/{controller=Home}/{action=Index}/{id?}"
             );
             routes.MapRoute(

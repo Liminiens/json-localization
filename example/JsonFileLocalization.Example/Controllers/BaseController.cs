@@ -20,5 +20,10 @@ namespace JsonFileLocalization.Example.Controllers
                 return _currentLanguage;
             }
         }
+        
+        public RedirectToActionResult RedirectToDefaultLanguage()
+        {
+            return RedirectToAction("Index", new { lang = CurrentLanguage });
+        }
     }
 }
