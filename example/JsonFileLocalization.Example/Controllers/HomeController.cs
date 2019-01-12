@@ -21,9 +21,9 @@ namespace JsonFileLocalization.Example.Controllers
         }
 
         [HttpPost]
-        public ViewResult Submit(IndexModel model)
+        public ViewResult Index(IndexModel model)
         {
-            return View("Index");
+            return View();
         }
     }
 }

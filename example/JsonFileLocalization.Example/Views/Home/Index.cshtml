@@ -23,18 +23,18 @@
     <div>
         <p>@Localizer["ViewData"]</p>
     </div>
-<div>
-    @foreach (var str in ExtendedLocalizer.GetLocalizedObject<string[]>("Data").Value)
-    {
-        <p>@str</p>
-    }
-</div>
-<form asp-controller="Home" asp-action="Submit" method="post">
-    <span asp-validation-for="Value"></span>
-    <label>
-        <input type="text" asp-for="Value"/>
-    </label>
-    <button type="submit">Submit</button>
-</form>
+    <div>
+        @foreach (var str in ExtendedLocalizer.GetLocalizedObject<string[]>("Data").Value)
+        {
+            <p>@str</p>
+        }
+    </div>
+    <form asp-controller="Home" asp-action="Index" method="post">
+        <span asp-validation-for="Value"></span>
+        <label>
+            <input type="text" asp-for="Value" />
+        </label>
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>

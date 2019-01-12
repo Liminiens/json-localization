@@ -33,7 +33,6 @@ namespace JsonFileLocalization.Example
                 opt.ResourceRelativePath = "CustomResourcesFolder";
                 opt.WatchForChanges = true;
             });
-            services.AddRouting(x => x.LowercaseUrls = true);
             services.Configure<RequestLocalizationOptions>(opts =>
             {
                 var supportedCultures = new List<CultureInfo>
@@ -61,6 +60,7 @@ namespace JsonFileLocalization.Example
             {
                 options.ConstraintMap.Add("lang", typeof(LanguageRouteConstraint));
             });
+            services.AddRouting(x => x.LowercaseUrls = true);
             services
                 .AddMvc(s => s.Filters.Add(new MiddlewareFilterAttribute(typeof(LocalizationPipeline))))
                 .AddDataAnnotationsLocalization();
@@ -69,10 +69,10 @@ namespace JsonFileLocalization.Example
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
-            app.UseDeveloperExceptionPage();
-            app.UseStaticFiles();
             var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(options.Value);
+            app.UseDeveloperExceptionPage();
+            app.UseStaticFiles();
             app.UseMvc(ConfigureRoutes);
         }
 
