@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace JsonFileLocalization.Caching
+﻿namespace JsonFileLocalization.Caching
 {
     /// <inheritdoc />
     internal class JsonFileContentCacheFactory : IJsonFileContentCacheFactory

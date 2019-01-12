@@ -1,5 +1,4 @@
-﻿using JsonFileLocalization.Caching;
-using JsonFileLocalization.Middleware;
+﻿using JsonFileLocalization.Middleware;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;

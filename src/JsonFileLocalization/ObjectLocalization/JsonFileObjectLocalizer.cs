@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using JsonFileLocalization.Middleware;
 using JsonFileLocalization.Resource;
 using Microsoft.Extensions.Logging;
 

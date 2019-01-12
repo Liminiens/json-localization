@@ -4,7 +4,6 @@ using JsonFileLocalization.Example.Localization;
 using JsonFileLocalization.Middleware;
 using JsonFileLocalization.Resource;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc;
