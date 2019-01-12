@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JsonFileLocalization.Example.Model;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
 namespace JsonFileLocalization.Example.Controllers
@@ -16,6 +17,12 @@ namespace JsonFileLocalization.Example.Controllers
         public ViewResult Index()
         {
             ViewBag.Something = _localizer["Something"];
+            return View("Index");
+        }
+
+        [HttpPost]
+        public ViewResult Submit(IndexModel model)
+        {
             return View("Index");
         }
     }

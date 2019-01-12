@@ -8,7 +8,6 @@
 @model JsonFileLocalization.Example.Model.IndexModel
 @{
     string currentController = ViewContext.RouteData.Values["Controller"].ToString();
-    string currentAction = ViewContext.RouteData.Values["Action"].ToString();
 }
 <!DOCTYPE html>
 <html>
@@ -16,8 +15,8 @@
     <title>Hi</title>
 </head>
 <body>
-    <a asp-controller="@currentController" asp-action="@currentAction" asp-route-lang="en">To en</a>
-    <a asp-controller="@currentController" asp-action="@currentAction" asp-route-lang="ru">To ru</a>
+    <a asp-controller="@currentController" asp-action="Index" asp-route-lang="en">To en</a>
+    <a asp-controller="@currentController" asp-action="Index" asp-route-lang="ru">To ru</a>
     <div>
         <p>@ViewBag.Something</p>
     </div>
@@ -30,5 +29,12 @@
         <p>@str</p>
     }
 </div>
+<form asp-controller="Home" asp-action="Submit" method="post">
+    <span asp-validation-for="Value"></span>
+    <label>
+        <input type="text" asp-for="Value"/>
+    </label>
+    <button type="submit">Submit</button>
+</form>
 </body>
 </html>

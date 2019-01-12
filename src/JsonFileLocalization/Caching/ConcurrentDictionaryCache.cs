@@ -10,7 +10,7 @@ namespace JsonFileLocalization.Caching
 
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
-            return _cache.GetOrAdd(key, new Lazy<TValue>(valueFactory(key))).Value;
+            return _cache.GetOrAdd(key, new Lazy<TValue>(() => valueFactory(key))).Value;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace JsonFileLocalization.Caching
         /// <returns>if added successfully</returns>
         public bool TryAdd(TKey key, TValue value)
         {
-            return _cache.TryAdd(key, new Lazy<TValue>(value));
+            return _cache.TryAdd(key, new Lazy<TValue>(() => value));
         }
 
         /// <summary>

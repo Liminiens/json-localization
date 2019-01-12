@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace JsonFileLocalization.Example
 {
@@ -43,7 +44,7 @@ namespace JsonFileLocalization.Example
                 };
                 opts.FallBackToParentCultures = false;
                 opts.FallBackToParentUICultures = false;
-                opts.DefaultRequestCulture = new RequestCulture("ru", "ru");
+                opts.DefaultRequestCulture = new RequestCulture("en");
                 // Formatting numbers, dates, etc.
                 opts.SupportedCultures = supportedCultures;
                 // UI strings that we have localized.
@@ -71,7 +72,8 @@ namespace JsonFileLocalization.Example
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
-            app.UseRequestLocalization();
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
             app.UseMvc(ConfigureRoutes);
         }
 

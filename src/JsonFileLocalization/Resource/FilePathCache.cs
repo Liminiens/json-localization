@@ -25,7 +25,7 @@ namespace JsonFileLocalization.Resource
                     return filePath;
                 }
                 //directory tree
-                var directories = String.Join(Path.DirectorySeparatorChar, parts.Take(i + 1));
+                var directories = String.Join(Path.DirectorySeparatorChar.ToString(), parts.Take(i + 1));
                 filePath = Path.Combine(directory, directories, filePart);
                 if (File.Exists(filePath))
                 {
