@@ -35,20 +35,20 @@ namespace JsonFileLocalization.Resource
         /// <param name="filePath">file path to a resource</param>
         /// <param name="culture">culture of a resource</param>
         /// <param name="logger">logger</param>
-        /// <param name="cacheFactory">file content cache factory</param>
+        /// <param name="cache">file content cache</param>
         public JsonFileResource(
             JObject content,
             string resourceName,
             string filePath,
             CultureInfo culture,
             ILogger<JsonFileResource> logger,
-            IJsonFileContentCacheFactory cacheFactory)
+            IJsonFileContentCache cache)
         {
             _content = content ?? throw new ArgumentNullException(nameof(content));
+            _contentCache = cache ?? throw new ArgumentNullException(nameof(cache));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
             Culture = culture ?? throw new ArgumentNullException(nameof(culture));
-            _contentCache = cacheFactory.Create() ?? throw new ArgumentNullException(nameof(cacheFactory));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             ResourceName = resourceName;
         }
 

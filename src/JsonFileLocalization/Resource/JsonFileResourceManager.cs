@@ -3,6 +3,7 @@ using JsonFileLocalization.Middleware;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -18,8 +19,8 @@ namespace JsonFileLocalization.Resource
         private readonly FilePathCache _filePathCache = new FilePathCache();
 
         private readonly JsonFileLocalizationSettings _settings;
-        private readonly ConcurrentDictionaryCache<string, JsonFileResource> _resourceCache
-            = new ConcurrentDictionaryCache<string, JsonFileResource>();
+        private readonly ConcurrentDictionary<string, JsonFileResource> _resourceCache
+            = new ConcurrentDictionary<string, JsonFileResource>();
 
         private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger<JsonFileResourceManager> _logger;
@@ -65,7 +66,7 @@ namespace JsonFileLocalization.Resource
             if (fileChanged)
             {
                 var filePath = fileSystemEventArgs.FullPath;
-                _resourceCache.Invalidate(filePath);
+                _resourceCache.TryRemove(filePath, out _);
                 _logger.LogInformation("Deleted resource \"{path}\" from cache", filePath);
             }
         }
@@ -116,7 +117,7 @@ namespace JsonFileLocalization.Resource
                 path,
                 culture,
                 _loggerFactory.CreateLogger<JsonFileResource>(),
-                _settings.ContentCacheFactory);
+                _settings.ContentCacheFactory.Create());
         }
 
         /// <inheritdoc />
