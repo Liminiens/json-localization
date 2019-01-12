@@ -15,31 +15,12 @@ using Microsoft.Extensions.Logging;
 
 namespace JsonFileLocalization.StringLocalization
 {
-
-    /// <summary>
-    /// String localizer based on json files
-    /// </summary>
     public class JsonFileStringLocalizer : IStringLocalizer
     {
-        /// <summary>
-        /// Logger
-        /// </summary>
         private readonly ILogger<JsonFileStringLocalizer> _logger;
-        /// <summary>
-        /// Localization settings for application
-        /// </summary>
         private readonly JsonFileLocalizationSettings _localizationSettings;
-        /// <summary>
-        /// Logger factory
-        /// </summary>
         private readonly ILoggerFactory _loggerFactory;
-        /// <summary>
-        /// Json file resource manager
-        /// </summary>
         private readonly IJsonFileResourceManager _resourceManager;
-        /// <summary>
-        /// Resource name without culture
-        /// </summary>
         private readonly string _baseName;
         /// <summary>
         /// Resource assembly name.
@@ -70,22 +51,14 @@ namespace JsonFileLocalization.StringLocalization
             _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
             Resource = resource ?? throw new ArgumentNullException(nameof(resource));
         }
-
-        /// <summary>
-        /// Json localization resources
-        /// </summary>
+        
         private JsonFileResource Resource { get; }
 
-        /// <summary>
-        /// Culture of localizer
-        /// </summary>
         public CultureInfo Culture => Resource.Culture;
 
         /// <summary>
         /// Method for retrieving string data from resource by JPath
         /// </summary>
-        /// <param name="jsonPropertyPath">JPath for string</param>
-        /// <returns>Value and if resource was searched by full name (location.baseName)</returns>
         private ValueFromResource<string> GetString(string jsonPropertyPath)
         {
             var result = Resource.GetValue<string>(jsonPropertyPath);
@@ -147,6 +120,7 @@ namespace JsonFileLocalization.StringLocalization
                 }
             }
         }
+        
         /// <inheritdoc />
         public virtual IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
         {

@@ -3,7 +3,7 @@
 namespace JsonFileLocalization.Caching
 {
     /// <inheritdoc />
-    public class JsonFileContentCacheFactory : IJsonFileContentCacheFactory
+    internal class JsonFileContentCacheFactory : IJsonFileContentCacheFactory
     {
         /// <inheritdoc />
         public IJsonFileContentCache Create()

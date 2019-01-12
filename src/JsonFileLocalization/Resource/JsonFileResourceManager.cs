@@ -24,11 +24,6 @@ namespace JsonFileLocalization.Resource
         private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger<JsonFileResourceManager> _logger;
 
-        /// <summary>
-        /// Creates an instance of resource manager with provided settings
-        /// </summary>
-        /// <param name="settings">settings for manager</param>
-        /// <param name="loggerFactory">logger factory</param>
         public JsonFileResourceManager(
             JsonFileLocalizationSettings settings,
             ILoggerFactory loggerFactory)
@@ -133,7 +128,7 @@ namespace JsonFileLocalization.Resource
             }
 
             baseName = baseName.Trim();
-            location = location.Trim();
+            location = location?.Trim() ?? String.Empty;
 
             var path = _filePathCache.GetOrFindFile(Path.Combine(_settings.ResourcesPath, GetFileName(baseName, location, culture)));
             if (path != null)

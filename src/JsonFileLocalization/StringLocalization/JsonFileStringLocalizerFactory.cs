@@ -5,15 +5,8 @@ using JsonFileLocalization.Resource;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
-/*
- * ResourceManagerStringLocalizerFactory HtmlLocalizerFactory
- */
-
 namespace JsonFileLocalization.StringLocalization
 {
-    /// <summary>
-    /// Factory for string localizers based on Json file resources
-    /// </summary>
     public class JsonFileStringLocalizerFactory : IStringLocalizerFactory
     {
         private readonly ILoggerFactory _loggerFactory;

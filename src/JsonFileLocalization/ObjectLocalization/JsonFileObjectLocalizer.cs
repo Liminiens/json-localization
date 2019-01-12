@@ -6,30 +6,12 @@ using Microsoft.Extensions.Logging;
 
 namespace JsonFileLocalization.ObjectLocalization
 {
-    /// <summary>
-    /// Service for localizing objects from resources in <see cref="JsonFileResource"/>
-    /// </summary>
     public class JsonFileObjectLocalizer : IObjectLocalizer
     {
-        /// <summary>
-        /// Logger
-        /// </summary>
         private readonly ILogger<JsonFileObjectLocalizer> _logger;
-        /// <summary>
-        /// Localization settings for application
-        /// </summary>
         private readonly JsonFileLocalizationSettings _localizationSettings;
-        /// <summary>
-        /// Logger factory
-        /// </summary>
         private readonly ILoggerFactory _loggerFactory;
-        /// <summary>
-        /// Json file resource manager
-        /// </summary>
         private readonly IJsonFileResourceManager _resourceManager;
-        /// <summary>
-        /// Resource name without culture
-        /// </summary>
         private readonly string _baseName;
         /// <summary>
         /// Resource assembly name.
@@ -60,10 +42,7 @@ namespace JsonFileLocalization.ObjectLocalization
             _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
             Resource = resource ?? throw new ArgumentNullException(nameof(resource));
         }
-
-        /// <summary>
-        /// Json localization resources
-        /// </summary>
+        
         private JsonFileResource Resource { get; }
 
         /// <inheritdoc />

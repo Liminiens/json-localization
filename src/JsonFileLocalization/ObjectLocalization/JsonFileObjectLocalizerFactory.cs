@@ -6,9 +6,6 @@ using Microsoft.Extensions.Logging;
 
 namespace JsonFileLocalization.ObjectLocalization
 {
-    /// <summary>
-    /// Factory of <see cref="JsonFileObjectLocalizer"/> objects
-    /// </summary>
     public class JsonFileObjectLocalizerFactory : IObjectLocalizerFactory
     {
         private readonly ILoggerFactory _loggerFactory;
