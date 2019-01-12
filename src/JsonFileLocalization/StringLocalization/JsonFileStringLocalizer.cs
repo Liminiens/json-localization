@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using JsonFileLocalization.Middleware;
 using JsonFileLocalization.Resource;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -18,7 +17,6 @@ namespace JsonFileLocalization.StringLocalization
     public class JsonFileStringLocalizer : IStringLocalizer
     {
         private readonly ILogger<JsonFileStringLocalizer> _logger;
-        private readonly JsonFileLocalizationSettings _localizationSettings;
         private readonly ILoggerFactory _loggerFactory;
         private readonly IJsonFileResourceManager _resourceManager;
         private readonly string _baseName;
@@ -36,12 +34,9 @@ namespace JsonFileLocalization.StringLocalization
             ILoggerFactory loggerFactory,
             IJsonFileResourceManager resourceManager,
             JsonFileResource resource,
-            JsonFileLocalizationSettings localizationSettings,
             string baseName,
             string location)
         {
-            _localizationSettings = localizationSettings ?? throw new ArgumentNullException(nameof(localizationSettings));
-
             _baseName = baseName ?? throw new ArgumentNullException(nameof(baseName));
             _location = location ?? throw new ArgumentNullException(nameof(location));
 
@@ -135,14 +130,13 @@ namespace JsonFileLocalization.StringLocalization
             {
                 return new JsonFileStringLocalizer(
                     _loggerFactory, _resourceManager, resource,
-                    _localizationSettings, _baseName, _location);
+                    _baseName, _location);
             }
             return null;
         }
 
         /// <inheritdoc />
         public virtual LocalizedString this[string name] => GetLocalizedString(name);
-
 
         /// <inheritdoc />
         public virtual LocalizedString this[string name, params object[] arguments] => GetLocalizedString(name, arguments);

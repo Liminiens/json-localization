@@ -13,8 +13,7 @@ namespace JsonFileLocalization.Tests.TestData
             var loggerFactory = Substitute.For<ILoggerFactory>();
             loggerFactory.CreateLogger<JsonFileStringLocalizer>()
                 .Returns(Substitute.For<ILogger<JsonFileStringLocalizer>>());
-            var settings = TestJsonFileResourceManager.GetSettings(strategy);
-            var factory = new JsonFileObjectLocalizerFactory(loggerFactory, settings,
+            var factory = new JsonFileObjectLocalizerFactory(loggerFactory,
                 TestJsonFileResourceManager.GetResourceManager(strategy));
             return factory;
         }

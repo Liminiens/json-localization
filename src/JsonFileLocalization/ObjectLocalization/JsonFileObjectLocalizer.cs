@@ -9,7 +9,6 @@ namespace JsonFileLocalization.ObjectLocalization
     public class JsonFileObjectLocalizer : IObjectLocalizer
     {
         private readonly ILogger<JsonFileObjectLocalizer> _logger;
-        private readonly JsonFileLocalizationSettings _localizationSettings;
         private readonly ILoggerFactory _loggerFactory;
         private readonly IJsonFileResourceManager _resourceManager;
         private readonly string _baseName;
@@ -27,12 +26,9 @@ namespace JsonFileLocalization.ObjectLocalization
             ILoggerFactory loggerFactory,
             IJsonFileResourceManager resourceManager,
             JsonFileResource resource,
-            JsonFileLocalizationSettings localizationSettings,
             string baseName,
             string location)
         {
-            _localizationSettings = localizationSettings ?? throw new ArgumentNullException(nameof(localizationSettings));
-
             _baseName = baseName ?? throw new ArgumentNullException(nameof(baseName));
             _location = location ?? throw new ArgumentNullException(nameof(location));
 
@@ -67,7 +63,7 @@ namespace JsonFileLocalization.ObjectLocalization
             {
                 return new JsonFileObjectLocalizer(
                     _loggerFactory, _resourceManager, resource,
-                    _localizationSettings, _baseName, _location);
+            _baseName, _location);
             }
             return null;
         }

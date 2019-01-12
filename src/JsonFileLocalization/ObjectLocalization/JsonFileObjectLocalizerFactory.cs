@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using JsonFileLocalization.Middleware;
 using JsonFileLocalization.Resource;
 using Microsoft.Extensions.Logging;
 
@@ -9,16 +8,13 @@ namespace JsonFileLocalization.ObjectLocalization
     public class JsonFileObjectLocalizerFactory : IObjectLocalizerFactory
     {
         private readonly ILoggerFactory _loggerFactory;
-        private readonly JsonFileLocalizationSettings _fileBasedLocalizationSettings;
         private readonly IJsonFileResourceManager _resourceManager;
 
         public JsonFileObjectLocalizerFactory(
             ILoggerFactory loggerFactory,
-            JsonFileLocalizationSettings fileBasedLocalizationSettings,
             IJsonFileResourceManager resourceManagerManager)
         {
             _loggerFactory = loggerFactory;
-            _fileBasedLocalizationSettings = fileBasedLocalizationSettings;
             _resourceManager = resourceManagerManager;
         }
 
@@ -37,8 +33,7 @@ namespace JsonFileLocalization.ObjectLocalization
             if (resource != null)
             {
                 return new JsonFileObjectLocalizer(
-                    _loggerFactory, _resourceManager, resource,
-                    _fileBasedLocalizationSettings, baseName, location);
+                    _loggerFactory, _resourceManager, resource, baseName, location);
             }
             return null;
         }

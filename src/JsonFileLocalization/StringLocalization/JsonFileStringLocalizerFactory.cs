@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Globalization;
 using JsonFileLocalization.Middleware;
 using JsonFileLocalization.Resource;
@@ -10,16 +11,13 @@ namespace JsonFileLocalization.StringLocalization
     public class JsonFileStringLocalizerFactory : IStringLocalizerFactory
     {
         private readonly ILoggerFactory _loggerFactory;
-        private readonly JsonFileLocalizationSettings _fileBasedLocalizationSettings;
         private readonly IJsonFileResourceManager _resourceManager;
 
         public JsonFileStringLocalizerFactory(
             ILoggerFactory loggerFactory,
-            JsonFileLocalizationSettings fileBasedLocalizationSettings,
             IJsonFileResourceManager resourceManagerManager)
         {
             _loggerFactory = loggerFactory;
-            _fileBasedLocalizationSettings = fileBasedLocalizationSettings;
             _resourceManager = resourceManagerManager;
         }
 
@@ -35,12 +33,11 @@ namespace JsonFileLocalization.StringLocalization
         public IStringLocalizer Create(string baseName, string location)
         {
             //location is a prefix to a resource name
+            var culture = CultureInfo.CurrentUICulture;
             var resource = _resourceManager.GetResource(baseName, location, CultureInfo.CurrentUICulture);
             if (resource != null)
             {
-                return new JsonFileStringLocalizer(
-                    _loggerFactory, _resourceManager, resource,
-                    _fileBasedLocalizationSettings, baseName, location);
+                return new JsonFileStringLocalizer(_loggerFactory, _resourceManager, resource, baseName, location);
             }
             return null;
         }
