@@ -23,15 +23,15 @@ namespace JsonFileLocalization.Middleware
             services.AddSingleton<JsonFileLocalizationSettings>();
             services.AddSingleton<IJsonFileResourceManager, JsonFileResourceManager>();
 
-            services.AddTransient<IStringLocalizerFactory, JsonFileStringLocalizerFactory>();
+            services.AddSingleton<IStringLocalizerFactory, JsonFileStringLocalizerFactory>();
             services.AddTransient(typeof(IStringLocalizer<>), typeof(JsonFileStringLocalizer<>));
-            services.AddTransient<IObjectLocalizerFactory, JsonFileObjectLocalizerFactory>();
+            services.AddSingleton<IObjectLocalizerFactory, JsonFileObjectLocalizerFactory>();
             services.AddTransient(typeof(IObjectLocalizer<>), typeof(JsonFileObjectLocalizer<>));
 
-            services.AddTransient<IHtmlLocalizerFactory, JsonFileHtmlLocalizerFactory>();
+            services.AddSingleton<IHtmlLocalizerFactory, JsonFileHtmlLocalizerFactory>();
             services.AddTransient(typeof(IHtmlLocalizer<>), typeof(JsonFileHtmlLocalizer<>));
-            services.AddTransient<IViewLocalizer, JsonFileViewExtendedLocalizer>();
-            services.AddTransient<IViewExtendedLocalizer, JsonFileViewExtendedLocalizer>();
+            services.AddSingleton<IViewLocalizer, JsonFileViewExtendedLocalizer>();
+            services.AddSingleton<IViewExtendedLocalizer, JsonFileViewExtendedLocalizer>();
 
             return services;
         }

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.DataAnnotations.Internal;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,8 +64,9 @@ namespace JsonFileLocalization.Example
             });
             services.AddRouting(x => x.LowercaseUrls = true);
             services
-                .AddMvc(s => s.Filters.Add(new MiddlewareFilterAttribute(typeof(LocalizationPipeline))))
+                .AddMvc(opts =>opts.Filters.Add(new MiddlewareFilterAttribute(typeof(LocalizationPipeline))))
                 .AddDataAnnotationsLocalization();
+            services.AddSingleton<IValidationAttributeAdapterProvider, LocalizedValidationAttributeAdapterProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
