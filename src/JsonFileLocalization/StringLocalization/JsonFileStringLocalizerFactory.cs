@@ -31,7 +31,6 @@ namespace JsonFileLocalization.StringLocalization
         public IStringLocalizer Create(string baseName, string location)
         {
             //location is a prefix to a resource name
-            var culture = CultureInfo.CurrentUICulture;
             var resource = _resourceManager.GetResource(baseName, location, CultureInfo.CurrentUICulture);
             if (resource != null)
             {

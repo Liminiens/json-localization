@@ -9,7 +9,7 @@ namespace JsonFileLocalization.Resource
     {
         private readonly ConcurrentDictionary<string, string> _cache = new ConcurrentDictionary<string, string>();
 
-        public static string FindFile(string resource)
+        private static string FindFile(string resource)
         {
             var fileName = Path.GetFileName(resource);
             var directory = Path.GetDirectoryName(resource);
