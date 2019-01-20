@@ -1,3 +1,3 @@
 # json-localization
 
-Localization for ASP .NET Core with resources in json files
+A localization library for ASP .NET Core which allows you to use `.json` files for storing resources.

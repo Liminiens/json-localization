@@ -3,6 +3,7 @@
 
 .tmp/
 logs/
+output/
 
 # User-specific files
 *.suo

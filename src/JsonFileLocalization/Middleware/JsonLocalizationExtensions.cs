@@ -1,39 +1,38 @@
-﻿using JsonFileLocalization.Caching;
-using JsonFileLocalization.Resources;
-using JsonFileLocalization.View;
-using Microsoft.AspNetCore.Hosting;
+﻿using JsonFileLocalization.ObjectLocalization;
+using JsonFileLocalization.Resource;
+using JsonFileLocalization.StringLocalization;
+using JsonFileLocalization.ViewLocalization;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
 namespace JsonFileLocalization.Middleware
 {
+    /// <summary>
+    /// MVC middleware extensions
+    /// </summary>
     public static class JsonLocalizationExtensions
     {
-        public static IServiceCollection AddJsonFileLocalization(
-            this IServiceCollection services, JsonLocalizationOptions options)
+        /// <summary>
+        /// Registers types for resource localization via json files
+        /// </summary>
+        /// <param name="services">service collection</param>
+        /// <returns></returns>
+        public static IServiceCollection AddJsonFileLocalization(this IServiceCollection services)
         {
-            services.AddSingleton<IJsonFileLocalizationSettings, JsonFileLocalizationSettings>(provider =>
-                new JsonFileLocalizationSettings(
-                    provider.GetService<IHostingEnvironment>(),
-                    options.CultureSuffixStrategy,
-                    options.ResourceRelativePath));
+            services.AddSingleton<JsonFileLocalizationSettings>();
             services.AddSingleton<IJsonFileResourceManager, JsonFileResourceManager>();
 
-            services.AddTransient<IJsonFileContentCache, JsonFileContentCache>();
-            services.AddTransient<IStringLocalizerFactory, JsonFileStringLocalizerFactory>();
+            services.AddSingleton<IStringLocalizerFactory, JsonFileStringLocalizerFactory>();
             services.AddTransient(typeof(IStringLocalizer<>), typeof(JsonFileStringLocalizer<>));
+            services.AddSingleton<IObjectLocalizerFactory, JsonFileObjectLocalizerFactory>();
+            services.AddTransient(typeof(IObjectLocalizer<>), typeof(JsonFileObjectLocalizer<>));
 
-            return services;
-        }
-
-        public static IServiceCollection AddJsonFileViewLocalication(this IServiceCollection services)
-        {
-            services.AddTransient<IViewLocalizer, JsonViewLocalizer>();
-            services.AddTransient<JsonViewLocalizer>();
-
-            services.AddTransient<IHtmlLocalizerFactory, JsonFileHtmlLocalizerFactory>();
+            services.AddSingleton<IHtmlLocalizerFactory, JsonFileHtmlLocalizerFactory>();
             services.AddTransient(typeof(IHtmlLocalizer<>), typeof(JsonFileHtmlLocalizer<>));
+            services.AddTransient<IViewLocalizer, JsonFileViewExtendedLocalizer>();
+            services.AddTransient<IViewExtendedLocalizer, JsonFileViewExtendedLocalizer>();
+
             return services;
         }
     }

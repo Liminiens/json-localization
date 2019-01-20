@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using FluentAssertions;
-using JsonFileLocalization.Resources;
+using JsonFileLocalization.Resource;
 using JsonFileLocalization.Tests.TestData;
 using JsonFileLocalization.Tests.TestData.Models;
 using Xunit;
@@ -15,7 +15,7 @@ namespace JsonFileLocalization.Tests
         public void GetValue_WhenCalledWithCorrectPath_ReturnsCorrectValue()
         {
             //Arrange
-            var manager = TestJsonFileResourceManager.GetResourceManager(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var manager = TestJsonFileResourceManager.GetResourceManager(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
 
             //Act
             var resource = manager.GetResource("_Layout", String.Empty, new CultureInfo("ru-RU"));
@@ -31,26 +31,11 @@ namespace JsonFileLocalization.Tests
         }
 
         [Fact]
-        public void GetRootPropertyNames_WhenCalled_ReturnsCorrectEnumeration()
-        {
-            //Arrange
-            var manager = TestJsonFileResourceManager.GetResourceManager(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
-
-            //Act
-            var resource = manager.GetResource("_Layout", String.Empty, new CultureInfo("ru-RU"));
-            var result = resource.GetRootPropertyNames().ToList();
-
-            //Assert
-            var expected = new[] { "TestString", "Inner", "TestObject" };
-            result.Should().Contain(expected);
-        }
-
-        [Fact]
         public void GetValue_WhenCalledWithIncorrectType_ReturnsDefaultValueAndWritesInLog()
         {
             //Arrange
             var loggerFactory = TestJsonFileResourceManager.GetLoggerFactory();
-            var settings = TestJsonFileResourceManager.GetSettings(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var settings = TestJsonFileResourceManager.GetSettings(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
             var manager = new JsonFileResourceManager(settings, loggerFactory.Factory);
 
             //Act
@@ -63,19 +48,20 @@ namespace JsonFileLocalization.Tests
             loggerCalls.Count().Should().Be(1);
         }
 
-        [Theory]
-        [InlineData("_Layout", "", "_Layout")]
-        [InlineData("IntArrayObject", "JsonFileLocalization.Tests", "JsonFileLocalization.Tests.IntArrayObject")]
-        public void ResourceName_WhenCalled_ReturnsCorrectResourceName(string baseName, string location, string expected)
+        [Fact]
+        public void GetValue_WhenFileIsInSubfolder_ReturnsResource()
         {
             //Arrange
-            var manager = TestJsonFileResourceManager.GetResourceManager(JsonFileCultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
+            var manager = TestJsonFileResourceManager.GetResourceManager(CultureSuffixStrategy.TwoLetterISO6391AndCountryCode);
 
             //Act
-            var resource = manager.GetResource(baseName, location, new CultureInfo("ru-RU"));
+            var resource = manager.GetResource("_Layout", String.Empty, new CultureInfo("fr-CA"));
+            var resource2 = manager.GetResource("Some.Folder.Name", String.Empty, new CultureInfo("en-US"));
+            var resource3 = manager.GetResource("Some.Data.File", String.Empty, new CultureInfo("en-US"));
 
-            //Assert
-            resource.ResourceName.Should().Be(expected);
+            resource.GetValue<string>("Data").Value.Should().Be("Fr value");
+            resource2.GetValue<string>("Data").Value.Should().Be("Something");
+            resource3.GetValue<string>("Data").Value.Should().Be("Data value");
         }
     }
 }
